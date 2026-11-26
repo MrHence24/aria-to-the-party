@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#672b9b">
+<title>Aria to the Party!</title>
+<style>
+:root{--plum:#512078;--purple:#8e50cf;--pink:#ff70bd;--cream:#fff8ff;--ink:#44265d;--mint:#b8f2df;--gold:#ffe58a}
+*{box-sizing:border-box;-webkit-touch-callout:none}
+html{min-height:100%;-webkit-text-size-adjust:100%;touch-action:manipulation}
+body{margin:0;min-height:100dvh;overflow-x:hidden;overscroll-behavior-y:contain;background:linear-gradient(145deg,#fce4f4,#e9dcff 58%,#d9f5ff);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+button{font:inherit;border:0;touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-appearance:none;appearance:none;user-select:none;-webkit-user-select:none;cursor:pointer}
+.game{width:100%;min-height:100dvh;margin:auto;background:#fffaff;display:flex;flex-direction:column}
+header{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;background:linear-gradient(90deg,#873dc0,#ed6db6);color:white}.brand{font-weight:950;font-size:clamp(1.1rem,3.5vw,1.5rem)}.pill{background:#ffffff30;border:1px solid #ffffff70;border-radius:99px;padding:6px 12px;font-weight:800;font-size:.9rem}
+main{padding:16px;flex:1;display:flex;flex-direction:column;gap:14px}h1{font-size:clamp(2rem,7vw,3rem);line-height:1.05;margin:0;color:var(--plum)}h2{margin:0;color:var(--plum);font-size:clamp(1.6rem,5vw,2.2rem)}p{line-height:1.45;margin:0}.center{text-align:center;align-items:center;justify-content:center}.hero{font-size:clamp(4rem,16vw,6.5rem);filter:drop-shadow(0 7px 4px #9a54a833)}
+.subtitle{font-size:1.08rem;max-width:540px}
+.primary{background:linear-gradient(100deg,#8d48ca,#ed65ad);color:white;border-radius:999px;padding:18px 36px;min-height:60px;font-weight:900;font-size:1.2rem;box-shadow:0 5px 0 #682b96;transition:transform .08s ease}
+.primary:active{transform:translateY(4px);box-shadow:0 1px 0 #682b96}
+.secondary{background:#f3e6ff;color:var(--plum);border:2px solid #dfc5f6;border-radius:999px;padding:12px 18px;min-height:50px;font-weight:800;transition:transform .08s ease}
+.secondary:active{transform:scale(.95)}
+.guide{display:flex;align-items:center;gap:12px;background:#f4e9ff;border:2px solid #e4cdf8;border-radius:18px;padding:12px 14px;width:100%;max-width:560px}.guide-face{font-size:2.4rem}.guide-text{font-weight:800;line-height:1.35}.guide small{display:block;font-weight:500;opacity:.75;margin-top:3px}
+.task{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fff0f8;border:2px solid #ffd0e8;border-radius:17px;padding:12px 15px}.target{display:flex;align-items:center;gap:10px;font-weight:900;font-size:1.1rem}.target .emoji{font-size:2.3rem}.counter{font-size:1.35rem;font-weight:950;white-space:nowrap}.progress{height:12px;background:#eadcf6;border-radius:99px;overflow:hidden}.progress>div{height:100%;background:linear-gradient(90deg,#a85bd7,#ff78b8);transition:width .25s}
+.scene{background:linear-gradient(180deg,#e8f7ff,#f5e9ff);border:3px solid #d8c3f2;border-radius:22px;padding:12px;min-height:280px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-content:center}
+.object{min-height:88px;border-radius:18px;background:white;border:3px solid white;box-shadow:0 4px 0 #d9c6eb;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--ink);font-weight:800;transition:transform .08s ease}
+.obj-emoji{font-size:clamp(2.2rem,8vw,3.1rem);line-height:1.1}
+.object:active{transform:scale(.92)}
+.object.collected{opacity:.25;filter:grayscale(1);pointer-events:none}
+.object.wrong{animation:wiggle .25s}@keyframes wiggle{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}.controls button{flex:1 1 140px}
+.hidden{display:none!important}footer{text-align:center;padding:10px;font-size:.78rem;opacity:.65}
+.party{position:relative;overflow:hidden;isolation:isolate;width:100%;min-height:650px;border-radius:24px;background:#57217e;color:white;padding:12px;text-align:center;box-shadow:0 8px 25px #4c206433}
+.party-room{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.party:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#35104b20 0%,transparent 42%,#32134e20 100%);z-index:-1;pointer-events:none}
+.party h2{color:white;font-size:clamp(1.65rem,5.5vw,2.6rem);text-shadow:0 3px 10px #26083d;margin-top:6px}.party-sub{font-weight:850;margin:3px 0 8px;text-shadow:0 2px 5px #26083d}
+.party-top{position:relative;z-index:2;pointer-events:none}
+.stage{position:relative;margin:110px auto 0;max-width:650px;min-height:185px;background:linear-gradient(180deg,#3b1a6140,#1b103e35);border-bottom:8px solid #ff78c5;border-radius:24px 24px 12px 12px;display:flex;align-items:end;justify-content:space-evenly;padding:14px 8px 14px;box-shadow:0 12px 0 #63258d66,inset 0 -12px 0 #ff78c533}
+.dancer{position:relative;z-index:2;width:30%;max-width:160px;display:flex;flex-direction:column;align-items:center;animation:dance .62s ease-in-out infinite alternate;transform-origin:50% 90%}.dancer:nth-of-type(2){animation-delay:-.2s}.dancer:nth-of-type(3){animation-delay:-.4s}
+@keyframes dance{0%{transform:translateY(0) rotate(-7deg)}35%{transform:translateY(-17px) rotate(8deg)}70%{transform:translateY(-5px) rotate(-4deg)}100%{transform:translateY(-22px) rotate(7deg)}}
+.person{width:82px;height:92px;position:relative;transform:scale(.82)}.head{position:absolute;left:19px;top:0;width:48px;height:49px;border-radius:48% 48% 45% 45%;background:#f4c6a5;border:3px solid #633a56}.hair{position:absolute;z-index:2;left:14px;top:-5px;width:58px;height:28px;border-radius:50% 50% 35% 35%;background:#65402e;border:3px solid #40243d}.hair:after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:9px;border-radius:50%;background:var(--tip)}.eye{position:absolute;top:22px;left:30px;width:5px;height:6px;border-radius:50%;background:#39213b;box-shadow:19px 0 #39213b}.smile{position:absolute;top:31px;left:38px;width:12px;height:7px;border-bottom:2px solid #9a405b;border-radius:50%}.bodygirl{position:absolute;left:17px;top:44px;width:53px;height:43px;background:var(--dress);clip-path:polygon(22% 0,78% 0,100% 100%,0 100%);border-radius:8px}.arm{position:absolute;top:48px;width:12px;height:43px;border-radius:99px;background:#f4c6a5;transform-origin:top}.arm.l{left:12px;transform:rotate(28deg)}.arm.r{right:7px;transform:rotate(-38deg)}.leg{position:absolute;top:79px;width:12px;height:25px;background:#fff0f6;border-radius:8px}.leg.l{left:30px;transform:rotate(12deg)}.leg.r{left:49px;transform:rotate(-12deg)}.name{font-weight:950;font-size:1rem;text-shadow:0 2px 5px #250b42}.dancer:nth-child(3) .person{transform:scale(.9)}
+.floor{height:14px;margin:8px auto 7px;max-width:650px;border-radius:50%;background:repeating-linear-gradient(90deg,#ff87d5 0 35px,#a8f5ef 35px 70px,#ffe58a 70px 105px);box-shadow:0 0 25px #ffb5ed}
+#effects{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:5}.bit{position:absolute;top:-30px;font-size:24px;animation:drop 3s linear forwards}@keyframes drop{to{transform:translateY(700px) rotate(540deg);opacity:.2}}.bubble{position:absolute;bottom:-40px;border:3px solid #ffffffa8;border-radius:50%;background:#b7efff55;animation:rise 4s linear forwards}@keyframes rise{to{transform:translateY(-700px) translateX(35px);opacity:0}}
+.dance-msg{font-weight:950;font-size:1.1rem;min-height:28px;text-shadow:0 2px 6px #26083d}
+.party-actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin:12px auto 0;max-width:650px;position:relative;z-index:8}.party-actions button{min-height:50px;background:#fff;color:#57217e;border-radius:999px;padding:10px 15px;font-weight:900;box-shadow:0 4px 0 #d6a8ee;transition:transform .08s ease}.party-actions button:active{transform:translateY(3px);box-shadow:0 1px 0 #d6a8ee}
+.room-inventory{position:absolute;inset:0;z-index:3;pointer-events:none}
+.room-item{position:absolute;width:clamp(35px,8vw,66px);height:clamp(35px,8vw,66px);filter:drop-shadow(0 3px 2px #33134455);animation:itemPop .45s cubic-bezier(.2,1.5,.5,1) both}
+.room-item svg{width:100%;height:100%;overflow:visible}
+@keyframes itemPop{from{opacity:0;transform:scale(.15) rotate(-18deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+.room-caption{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);background:#4b1e6dcc;color:#fff;border:1px solid #ffffff66;border-radius:99px;padding:5px 12px;font-size:.75rem;font-weight:850;white-space:nowrap;pointer-events:none}
+@media(max-width:520px){main{padding:12px}.party{min-height:620px;padding:9px}.stage{margin-top:105px;min-height:155px}.person{transform:scale(.72);transform-origin:bottom center;margin-bottom:-10px}.dancer:nth-child(3) .person{transform:scale(.78)}.name{font-size:.88rem}.party-actions button{flex:1 1 42%;font-size:.9rem}.room-item{width:clamp(34px,9vw,48px);height:clamp(34px,9vw,48px)}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="game">
+<header><div class="brand">🎉 Aria to the Party!</div><div class="pill" id="stagePill">Let's get ready!</div></header>
+<main id="welcome" class="center">
+<div class="hero">🎈🎁🧁</div><h1>Aria to the Party!</h1>
+<p class="subtitle">A party is waiting! Help Aria find the supplies. Count carefully, collect everything, and then celebrate!</p>
+<div class="guide" style="text-align:left"><div class="guide-face">🦄</div><div class="guide-text">Hi, Aria! I'm your party helper. We'll find everything together. Ready to play?<small>Tap the party supplies you need.</small></div></div>
+<button class="primary" id="startBtn" type="button">Let's go!</button>
+</main>
+<main id="play" class="hidden">
+<div class="guide"><div class="guide-face">🦄</div><div><div class="guide-text" id="guideText">Let's find the party supplies!</div><small id="guideHint">Tap the items you need.</small></div></div>
+<div class="task"><div class="target"><span class="emoji" id="targetEmoji">🎈</span><span id="targetName">Balloons</span></div><div class="counter"><span id="countNow">0</span> / <span id="countGoal">5</span></div></div>
+<div class="progress"><div id="progressFill"></div></div><section class="scene" id="scene"></section>
+<div class="controls"><button class="secondary" id="repeatBtn" type="button">🔊 Hear that again</button><button class="secondary" id="soundBtn" type="button">Voice: on</button></div>
+</main>
+<main id="finish" class="hidden center">
+<div class="party" id="party">
+<img class="party-room" src="assets/party-room.png" alt="" aria-hidden="true">
+<div id="effects"></div><div class="room-inventory" id="roomInventory" aria-label="The party decorations Aria collected"></div>
+<div class="party-top"><h2>Aria's AMAZING Party!</h2><p class="party-sub">You found the supplies. You made this party happen!</p></div>
+<div class="stage">
+<div class="dancer"><div class="person"><div class="hair" style="--tip:#54a9ff"></div><div class="head"><i class="eye"></i><i class="smile"></i></div><div class="bodygirl" style="--dress:#438de5"></div><div class="arm l"></div><div class="arm r"></div><div class="leg l"></div><div class="leg r"></div></div><div class="name">Ella</div></div>
+<div class="dancer"><div class="person"><div class="hair" style="--tip:#ff7cba"></div><div class="head"><i class="eye"></i><i class="smile"></i></div><div class="bodygirl" style="--dress:#ff79b9"></div><div class="arm l"></div><div class="arm r"></div><div class="leg l"></div><div class="leg r"></div></div><div class="name">June</div></div>
+<div class="dancer"><div class="person"><div class="hair" style="--tip:#69d89d"></div><div class="head"><i class="eye"></i><i class="smile"></i></div><div class="bodygirl" style="--dress:#50bd83"></div><div class="arm l"></div><div class="arm r"></div><div class="leg l"></div><div class="leg r"></div></div><div class="name">Aria</div></div>
+</div>
+<div class="floor"></div><div class="dance-msg" id="danceMsg">Everybody dance!</div>
+<div class="room-caption" id="roomCaption">Aria's party room — decorated with everything she found!</div>
+<div class="party-actions">
+<button id="musicBtn" type="button">▶ Start disco music</button><button id="confettiBtn" type="button">🎉 Confetti!</button>
+<button id="bubbleBtn" type="button">🫧 Bubbles!</button><button id="fireworksBtn" type="button">✨ Fireworks!</button><button id="danceBtn" type="button">💃 Dance move!</button>
+</div>
+<p style="margin:13px 0 5px;font-weight:850;text-shadow:0 2px 5px #26083d">The party is yours. Stay and play as long as you like!</p>
+</div>
+<button class="primary" id="againBtn" type="button" style="margin-top:14px">Play again!</button>
+</main>
+<footer>Made for Aria • Count, find, collect, celebrate!</footer>
+</div>
+<script>
+const rounds=[
+{name:"pink balloons",label:"Balloons",emoji:"🎈",goal:5,items:["🎈","🎁","🧁","🎈","🎀","🎈","🍭","🎈","🎂","🎈","🌸","🎁","🧁","🎈","🎀","🍬","🎈","🎂"]},
+{name:"cupcakes",label:"Cupcakes",emoji:"🧁",goal:7,items:["🧁","🎈","🍬","🧁","🎀","🧁","🎂","🎁","🧁","🍭","🧁","🌸","🧁","🎈","🧁","🎁","🧁","🎀"]},
+{name:"party hats",label:"party hats",emoji:"🥳",goal:10,items:["🥳","🎈","🎁","🥳","🧁","🎀","🥳","🎂","🥳","🍬","🎁","🥳","🌸","🥳","🎈","🥳","🧁","🥳","🎀","🥳","🎁","🥳"]}
+];
+let roundIndex=0,collected=0,voiceOn=true,lastMessage="",inventory=[],audioCtx=null,musicTimer=null,musicOn=false,step=0;
+const $=id=>document.getElementById(id);
+
+// Pointer Events unify touch, pen, and mouse. One activation per physical tap.
+function bindTap(el,handler){el.addEventListener("click",e=>{e.preventDefault();handler(e)});}
+function speak(m){lastMessage=m;try{if(voiceOn&&"speechSynthesis"in window&&window.SpeechSynthesisUtterance){window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(m);u.rate=.88;u.pitch=1.12;u.lang="en-US";window.speechSynthesis.speak(u)}}catch(e){}}
+function show(id){["welcome","play","finish"].forEach(x=>$(x).classList.toggle("hidden",x!==id))}
+function startGame(){roundIndex=0;inventory=[];show("play");loadRound()}
+function loadRound(){
+collected=0;const r=rounds[roundIndex];$("stagePill").textContent=`Supply ${roundIndex+1} of ${rounds.length}`;$("targetEmoji").textContent=r.emoji;$("targetName").textContent=r.label;$("countNow").textContent=0;$("countGoal").textContent=r.goal;$("progressFill").style.width="0%";$("guideText").textContent=`Let's find ${r.goal} ${r.name}!`;$("guideHint").textContent="Count each one as you tap it.";
+const scene=$("scene");scene.innerHTML="";
+r.items.map((v,i)=>({v,i})).sort(()=>Math.random()-.5).forEach(it=>{const b=document.createElement("button");b.className="object";b.type="button";b.setAttribute("aria-label",it.v===r.emoji?r.label:"Party item");b.innerHTML=`<span class="obj-emoji">${it.v}</span>`;bindTap(b,()=>pick(b,it.v,r));scene.appendChild(b)});
+speak(`Aria, let's find ${r.goal} ${r.name}. Tap the ${r.name} you see.`);
+}
+function pick(b,item,r){
+if(b.classList.contains("collected"))return;
+if(item!==r.emoji){b.classList.remove("wrong");void b.offsetWidth;b.classList.add("wrong");$("guideText").textContent=`That's a ${item}, but we're looking for ${r.name}.`;speak(`Good looking! That's not what we need right now. Let's find ${r.name}.`);return}
+b.classList.add("collected");collected++;inventory.push({emoji:item,name:r.label,kind:r.label});$("countNow").textContent=collected;$("progressFill").style.width=`${collected/r.goal*100}%`;$("guideText").textContent=collected<r.goal?`You found one! Let's count: ${collected}.`:`You found all ${r.goal}!`;speak(collected<r.goal?`${collected}! You found ${collected}. ${r.goal-collected} more to go!`:`You found all ${r.goal} ${r.name}!`);
+if(collected===r.goal)setTimeout(()=>{roundIndex++;if(roundIndex<rounds.length)loadRound();else finishGame()},900);
+}
+
+// Original vector drawings for the actual collected party supplies (no emoji thumbnails).
+function drawing(kind,index){
+const colors=["#ff70bd","#ffc94d","#71c9f2","#9a72e8","#75d6a7","#ff936d"];
+const c=colors[index%colors.length],c2=colors[(index+2)%colors.length];
+if(kind==="Balloons")return `<svg viewBox="0 0 100 110" role="img" aria-label="Illustrated balloon"><path d="M48 78 Q42 91 51 105" fill="none" stroke="#76509a" stroke-width="2.5"/><path d="M50 7 C25 7 12 28 20 52 C26 72 42 82 50 83 C62 80 79 65 82 45 C86 23 70 7 50 7Z" fill="${c}" stroke="#8a438b" stroke-width="3"/><ellipse cx="37" cy="27" rx="8" ry="13" fill="#fff" opacity=".45"/><path d="M43 82 L57 82 L50 91Z" fill="${c2}" stroke="#8a438b" stroke-width="2"/></svg>`;
+if(kind==="Cupcakes")return `<svg viewBox="0 0 100 100" role="img" aria-label="Illustrated cupcake"><path d="M22 46 Q16 30 32 27 Q33 7 51 16 Q67 4 73 29 Q91 34 78 49Z" fill="${c}" stroke="#9a4b9a" stroke-width="3"/><path d="M24 47 L77 47 L68 89 L33 89Z" fill="#e8a1c9" stroke="#8a438b" stroke-width="3"/><path d="M34 56 L40 84 M49 54 L50 86 M64 55 L60 84" stroke="#fff4d5" stroke-width="4"/><circle cx="51" cy="15" r="7" fill="#ffe58a" stroke="#9a4b9a" stroke-width="2"/></svg>`;
+if(kind==="Party hats")return `<svg viewBox="0 0 100 100" role="img" aria-label="Illustrated party hat"><path d="M12 82 L49 8 L87 82Z" fill="${c}" stroke="#704080" stroke-width="3" stroke-linejoin="round"/><path d="M29 52 L69 52 M20 69 L78 69" stroke="#fff4d5" stroke-width="7"/><circle cx="49" cy="8" r="8" fill="#ffe58a" stroke="#704080" stroke-width="2"/><path d="M12 83 Q50 94 87 83" fill="none" stroke="#704080" stroke-width="4"/></svg>`;
+return `<svg viewBox="0 0 100 100"><path d="M15 15 L85 85 M85 15 L15 85" stroke="${c}" stroke-width="12" stroke-linecap="round"/></svg>`;
+}
+function renderRoom(){
+const room=$("roomInventory");room.innerHTML="";
+const slots=[
+[7,22],[17,23],[27,22],[72,22],[82,23],[92,22],
+[9,47],[20,48],[31,47],[69,47],[80,48],[91,47],
+[12,67],[25,68],[75,68],[88,67],
+[38,75],[50,76],[62,75]
+];
+inventory.forEach((item,i)=>{
+const slot=slots[i%slots.length],node=document.createElement("div");node.className="room-item";
+node.style.left=`${slot[0]}%`;node.style.top=`${slot[1]}%`;node.style.animationDelay=`${Math.min(i*.035,.5)}s`;
+node.innerHTML=drawing(item.kind,i);node.title=item.name;room.appendChild(node);
+});
+$("roomCaption").textContent=`${inventory.length} party treasures collected by Aria`;
+}
+function finishGame(){show("finish");$("stagePill").textContent="Party time!";renderRoom();speak("Hooray, Aria! You found every party supply. This is your party! Let's dance!");confetti();$("musicBtn").textContent="▶ Start disco music"}
+function burst(symbols,n=45){const e=$("effects");for(let i=0;i<n;i++){const b=document.createElement("span");b.className="bit";b.textContent=symbols[Math.floor(Math.random()*symbols.length)];b.style.left=Math.random()*100+"%";b.style.animationDuration=2+Math.random()*2+"s";b.style.animationDelay=Math.random()*.8+"s";e.appendChild(b);setTimeout(()=>b.remove(),5000)}}
+function confetti(){burst(["🎉","🎊","✨","🎀","⭐"],65);$("danceMsg").textContent="CONFETTI PARTY!"}
+function bubbles(){const e=$("effects");for(let i=0;i<22;i++){const b=document.createElement("i");b.className="bubble";const s=14+Math.random()*34;b.style.width=s+"px";b.style.height=s+"px";b.style.left=Math.random()*100+"%";b.style.animationDelay=Math.random()*2+"s";e.appendChild(b);setTimeout(()=>b.remove(),6000)}$("danceMsg").textContent="BUBBLES EVERYWHERE!"}
+function fireworks(){burst(["🎆","✨","🌟","💖"],40);$("danceMsg").textContent="WOW! FIREWORKS!"}
+function dance(){const msgs=["Everybody dance!","Spin, spin, sparkle!","Show us your best moves!","Dance party!","Wiggle and groove!"];$("danceMsg").textContent=msgs[Math.floor(Math.random()*msgs.length)];document.querySelectorAll(".dancer").forEach(d=>{d.style.animationDuration=.35+Math.random()*.45+"s";d.animate([{transform:"translateY(0) rotate(0)"},{transform:"translateY(-32px) rotate(18deg)"},{transform:"translateY(0) rotate(-12deg)"},{transform:"translateY(-15px) rotate(0)"}],{duration:750,iterations:2})})}
+function tone(freq,dur,type="sawtooth",vol=.035,when=0){const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(.0001,audioCtx.currentTime+when);g.gain.exponentialRampToValueAtTime(vol,audioCtx.currentTime+when+.012);g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+when+dur);o.connect(g);g.connect(audioCtx.destination);o.start(audioCtx.currentTime+when);o.stop(audioCtx.currentTime+when+dur+.03)}
+function kick(t){const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type="sine";o.frequency.setValueAtTime(125,audioCtx.currentTime+t);o.frequency.exponentialRampToValueAtTime(42,audioCtx.currentTime+t+.13);g.gain.setValueAtTime(.18,audioCtx.currentTime+t);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+t+.16);o.connect(g);g.connect(audioCtx.destination);o.start(audioCtx.currentTime+t);o.stop(audioCtx.currentTime+t+.17)}
+function beat(){if(!musicOn)return;const t=.01,beatNo=step%16;if(beatNo%4===0)kick(t);if(beatNo%4===2)tone(180,.055,"triangle",.035,t);if(beatNo%2===0)tone(850,.035,"square",.012,t);const bass=[55,55,73.4,82.4,55,55,73.4,98][Math.floor(beatNo/2)];tone(bass,.17,"sawtooth",.055,t);const notes=[440,523.25,659.25,587.33,523.25,392,440,523.25];if(beatNo%2===0)tone(notes[(step/2|0)%notes.length],.12,"triangle",.025,t+.03);step++;musicTimer=setTimeout(beat,60000/124/4)}
+async function toggleMusic(){try{if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();await audioCtx.resume();musicOn=!musicOn;if(musicOn){step=0;$("musicBtn").textContent="Ⅱ Pause disco music";beat();$("danceMsg").textContent="FUNKY DISCO TIME!"}else{clearTimeout(musicTimer);$("musicBtn").textContent="▶ Start disco music"}}catch(e){$("danceMsg").textContent="Music is not available in this browser."}}
+function toggleVoice(){voiceOn=!voiceOn;$("soundBtn").textContent=`Voice: ${voiceOn?"on":"off"}`;if(!voiceOn&&"speechSynthesis"in window)window.speechSynthesis.cancel();else speak(lastMessage)}
+bindTap($("startBtn"),startGame);bindTap($("repeatBtn"),()=>speak(lastMessage));bindTap($("soundBtn"),toggleVoice);
+bindTap($("againBtn"),()=>{if(musicOn){musicOn=false;clearTimeout(musicTimer);$("musicBtn").textContent="▶ Start disco music"}show("welcome");$("stagePill").textContent="Let's get ready!"});
+bindTap($("musicBtn"),toggleMusic);bindTap($("confettiBtn"),confetti);bindTap($("bubbleBtn"),bubbles);bindTap($("fireworksBtn"),fireworks);bindTap($("danceBtn"),dance);
+</script>
+</body>
+</html>
