@@ -1,0 +1,2039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#672b9b">
+<title>Aria to the Party!</title>
+<style>
+:root{
+  --plum:#512078;
+  --purple:#8e50cf;
+  --pink:#ff70bd;
+  --cream:#fff8ff;
+  --ink:#44265d;
+  --mint:#b8f2df;
+  --gold:#ffe58a;
+  --party-glow:rgba(255,112,189,.35);
+}
+*{box-sizing:border-box;-webkit-touch-callout:none}
+html{min-height:100%;-webkit-text-size-adjust:100%;touch-action:manipulation}
+body{
+  margin:0;
+  min-height:100dvh;
+  overflow-x:hidden;
+  overscroll-behavior-y:contain;
+  background:linear-gradient(145deg,#fce4f4,#e9dcff 58%,#d9f5ff);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color:var(--ink);
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+  -webkit-user-select:none;
+}
+button{
+  font:inherit;
+  border:0;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+  -webkit-appearance:none;
+  appearance:none;
+  user-select:none;
+  -webkit-user-select:none;
+  cursor:pointer;
+}
+button:focus-visible{
+  outline:3px solid #ffe58a;
+  outline-offset:2px;
+}
+.game{
+  width:100%;
+  min-height:100dvh;
+  margin:auto;
+  background:#fffaff;
+  display:flex;
+  flex-direction:column;
+}
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding:11px 16px;
+  background:linear-gradient(90deg,#873dc0,#ed6db6);
+  color:#fff;
+  z-index:20;
+}
+.brand{font-weight:950;font-size:clamp(1.05rem,3.4vw,1.45rem);letter-spacing:-.01em}
+.header-right{display:flex;align-items:center;gap:8px}
+.pill{
+  background:#ffffff30;
+  border:1px solid #ffffff70;
+  border-radius:99px;
+  padding:6px 12px;
+  font-weight:800;
+  font-size:.88rem;
+  white-space:nowrap;
+}
+main{
+  padding:16px;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+h1{font-size:clamp(2rem,7vw,3rem);line-height:1.05;margin:0;color:var(--plum)}
+h2{margin:0;color:var(--plum);font-size:clamp(1.5rem,5vw,2.1rem)}
+p{line-height:1.45;margin:0}
+.center{text-align:center;align-items:center;justify-content:center}
+.hero{font-size:clamp(4rem,16vw,6.5rem);filter:drop-shadow(0 7px 4px #9a54a833)}
+.subtitle{font-size:1.08rem;max-width:540px}
+.primary{
+  background:linear-gradient(100deg,#8d48ca,#ed65ad);
+  color:#fff;
+  border-radius:999px;
+  padding:18px 36px;
+  min-height:60px;
+  font-weight:900;
+  font-size:1.2rem;
+  box-shadow:0 5px 0 #682b96;
+  transition:transform .08s ease;
+}
+.primary:active{transform:translateY(4px);box-shadow:0 1px 0 #682b96}
+.secondary{
+  background:#f3e6ff;
+  color:var(--plum);
+  border:2px solid #dfc5f6;
+  border-radius:999px;
+  padding:12px 18px;
+  min-height:50px;
+  font-weight:800;
+  transition:transform .08s ease;
+}
+.secondary:active{transform:scale(.95)}
+.guide{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:#f4e9ff;
+  border:2px solid #e4cdf8;
+  border-radius:18px;
+  padding:12px 14px;
+  width:100%;
+  max-width:560px;
+}
+.guide-face{font-size:2.4rem}
+.guide-text{font-weight:800;line-height:1.35}
+.guide small{display:block;font-weight:500;opacity:.75;margin-top:3px}
+.task{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  background:#fff0f8;
+  border:2px solid #ffd0e8;
+  border-radius:17px;
+  padding:12px 15px;
+}
+.target{display:flex;align-items:center;gap:10px;font-weight:900;font-size:1.1rem}
+.target .emoji{font-size:2.3rem}
+.counter{font-size:1.35rem;font-weight:950;white-space:nowrap}
+.progress{height:12px;background:#eadcf6;border-radius:99px;overflow:hidden}
+.progress>div{height:100%;background:linear-gradient(90deg,#a85bd7,#ff78b8);transition:width .25s}
+.scene{
+  background:linear-gradient(180deg,#e8f7ff,#f5e9ff);
+  border:3px solid #d8c3f2;
+  border-radius:22px;
+  padding:12px;
+  min-height:280px;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  align-content:center;
+}
+.object{
+  min-height:88px;
+  border-radius:18px;
+  background:#fff;
+  border:3px solid #fff;
+  box-shadow:0 4px 0 #d9c6eb;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  color:var(--ink);
+  font-weight:800;
+  transition:transform .08s ease;
+}
+.obj-emoji{font-size:clamp(2.2rem,8vw,3.1rem);line-height:1.1}
+.object:active{transform:scale(.92)}
+.object.collected{opacity:.25;filter:grayscale(1);pointer-events:none}
+.object.wrong{animation:wiggle .25s}
+@keyframes wiggle{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.controls button{flex:1 1 140px}
+.hidden{display:none!important}
+footer{text-align:center;padding:10px;font-size:.78rem;opacity:.65}
+
+/* ==================== PARTY EXPERIENCE ==================== */
+#finish{
+  padding:10px 12px 16px;
+  background:radial-gradient(circle at 50% 20%,#45176d,#210a3b 80%);
+  color:#fff;
+  justify-content:flex-start;
+  gap:10px;
+}
+.party-shell{
+  width:100%;
+  max-width:1080px;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+/* Top HUD */
+.party-hud{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  flex-wrap:wrap;
+  background:rgba(38,11,68,.75);
+  border:1.5px solid rgba(255,255,255,.22);
+  border-radius:18px;
+  padding:8px 12px;
+  backdrop-filter:blur(8px);
+}
+.party-title-group{display:flex;align-items:center;gap:10px;text-align:left}
+.party-badge{
+  background:linear-gradient(135deg,#ff70bd,#ffba52);
+  color:#380c55;
+  font-weight:950;
+  font-size:.78rem;
+  padding:4px 10px;
+  border-radius:99px;
+  box-shadow:0 2px 8px rgba(255,112,189,.45);
+}
+.party-status{
+  font-weight:900;
+  font-size:clamp(.92rem,2.6vw,1.1rem);
+  color:#fff;
+  text-shadow:0 2px 6px rgba(0,0,0,.5);
+}
+.hud-controls{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.hud-btn{
+  background:rgba(255,255,255,.16);
+  color:#fff;
+  border:1.5px solid rgba(255,255,255,.32);
+  border-radius:99px;
+  padding:7px 12px;
+  min-height:38px;
+  font-weight:800;
+  font-size:.82rem;
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  transition:transform .1s ease,background .15s ease;
+}
+.hud-btn:active{transform:scale(.94)}
+.hud-btn.is-on{background:rgba(255,112,189,.4);border-color:#ff9ad2}
+
+/* 2.5D Party Room Stage */
+.party-world{
+  position:relative;
+  width:100%;
+  aspect-ratio:16 / 9;
+  min-height:310px;
+  border-radius:22px;
+  overflow:hidden;
+  isolation:isolate;
+  background:#220a3a;
+  box-shadow:0 14px 40px rgba(8,2,20,.65),0 0 0 3px rgba(255,255,255,.18);
+}
+.room-bg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  z-index:0;
+  transition:filter 1.2s ease,transform 1.2s ease;
+}
+
+/* Phase A darkness & lighting moods */
+.room-dimmer{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background:radial-gradient(circle at 50% 45%,rgba(28,8,52,.42),rgba(12,3,28,.88));
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 1.1s ease;
+}
+.party-world.is-dim .room-dimmer{opacity:1}
+
+.lighting-overlay{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  mix-blend-mode:screen;
+  opacity:0;
+  transition:opacity .9s ease;
+}
+.party-world.lights-on .lighting-overlay{opacity:1}
+
+/* Spotlight beams from the 4 ceiling lights */
+.beam{
+  position:absolute;
+  top:-6%;
+  width:24%;
+  height:92%;
+  transform-origin:50% 0%;
+  opacity:.32;
+  filter:blur(8px);
+  pointer-events:none;
+  clip-path:polygon(42% 0%,58% 0%,100% 100%,0% 100%);
+  animation:swayBeam 5.5s ease-in-out infinite alternate;
+}
+.beam.b1{left:8%;background:linear-gradient(180deg,#ff66cc,transparent 88%);animation-delay:0s}
+.beam.b2{left:25%;background:linear-gradient(180deg,#48d9ff,transparent 88%);animation-delay:-1.4s}
+.beam.b3{left:52%;background:linear-gradient(180deg,#ffe066,transparent 88%);animation-delay:-2.7s}
+.beam.b4{left:69%;background:linear-gradient(180deg,#64e5ff,transparent 88%);animation-delay:-3.8s}
+@keyframes swayBeam{
+  0%{transform:rotate(-8deg)}
+  100%{transform:rotate(8deg)}
+}
+
+/* Lighting Mood Themes */
+.party-world[data-mood="gold"] .beam{background:linear-gradient(180deg,#ffd56b,transparent 88%)!important;opacity:.38}
+.party-world[data-mood="neon"] .beam.b1,.party-world[data-mood="neon"] .beam.b3{background:linear-gradient(180deg,#ff3ec9,transparent 88%)}
+.party-world[data-mood="neon"] .beam.b2,.party-world[data-mood="neon"] .beam.b4{background:linear-gradient(180deg,#2ef2ff,transparent 88%)}
+.party-world[data-mood="starry"] .room-bg{filter:brightness(.74) saturate(1.2) hue-rotate(-10deg)}
+.party-world[data-mood="starry"] .beam{background:linear-gradient(180deg,#9b8cff,transparent 88%)!important;opacity:.28}
+
+/* Disco ball shimmer */
+.disco-glint{
+  position:absolute;
+  left:50%;
+  top:9%;
+  width:11%;
+  aspect-ratio:1;
+  transform:translate(-50%,-50%);
+  z-index:3;
+  border-radius:50%;
+  pointer-events:none;
+  opacity:0;
+  background:radial-gradient(circle,#fff 0%,rgba(255,255,255,.55) 28%,transparent 68%);
+  transition:opacity .8s ease;
+  animation:discoPulse 1.8s ease-in-out infinite alternate;
+}
+.party-world.lights-on .disco-glint{opacity:.85}
+@keyframes discoPulse{0%{transform:translate(-50%,-50%) scale(.9) rotate(0deg)}100%{transform:translate(-50%,-50%) scale(1.12) rotate(20deg)}}
+
+/* Wall Sign on Left Frame */
+.wall-sign{
+  position:absolute;
+  left:5.2%;
+  top:19.5%;
+  width:13.2%;
+  height:16%;
+  z-index:4;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:4px;
+  border-radius:10px;
+  background:linear-gradient(135deg,#fff5fc,#ffe6f6);
+  border:2px solid #ff97d0;
+  box-shadow:0 0 18px rgba(255,151,208,.6);
+  opacity:0;
+  transform:scale(.85);
+  transition:opacity .7s ease,transform .7s cubic-bezier(.2,1.5,.5,1);
+  pointer-events:none;
+}
+.wall-sign.is-visible{opacity:1;transform:scale(1)}
+.wall-sign strong{
+  font-size:clamp(.48rem,1.25vw,.86rem);
+  line-height:1.1;
+  color:#6c1d8c;
+  font-weight:950;
+}
+.wall-sign span{
+  font-size:clamp(.42rem,1vw,.72rem);
+  color:#d93d92;
+  font-weight:800;
+  margin-top:2px;
+}
+
+/* DJ Booth Hotspot + Equalizer */
+.dj-hotspot{
+  position:absolute;
+  left:50%;
+  top:34%;
+  width:24%;
+  height:22%;
+  transform:translateX(-50%);
+  z-index:6;
+  background:transparent;
+  border-radius:18px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-end;
+  padding-bottom:6px;
+}
+.dj-eq{
+  display:flex;
+  align-items:flex-end;
+  gap:3px;
+  height:22px;
+  padding:3px 8px;
+  border-radius:99px;
+  background:rgba(20,8,44,.68);
+  border:1px solid rgba(113,229,255,.55);
+  opacity:0;
+  transition:opacity .35s ease;
+}
+.party-world.music-playing .dj-eq{opacity:1}
+.dj-eq i{
+  display:block;
+  width:4px;
+  height:6px;
+  border-radius:3px;
+  background:linear-gradient(180deg,#ff77d4,#54e8ff);
+  animation:eqBar .45s ease-in-out infinite alternate;
+}
+.dj-eq i:nth-child(2){animation-delay:-.15s}
+.dj-eq i:nth-child(3){animation-delay:-.3s}
+.dj-eq i:nth-child(4){animation-delay:-.08s}
+.dj-eq i:nth-child(5){animation-delay:-.24s}
+@keyframes eqBar{0%{height:4px}100%{height:16px}}
+
+/* Collected Supplies Layer (Cupcakes & Hats + Interactive Balloons) */
+.room-decor{
+  position:absolute;
+  inset:0;
+  z-index:5;
+  pointer-events:none;
+}
+.decor-prop{
+  position:absolute;
+  width:clamp(24px,3.6vw,44px);
+  height:clamp(24px,3.6vw,44px);
+  transform:translate(-50%,-50%) scale(0);
+  opacity:0;
+  filter:drop-shadow(0 3px 3px rgba(20,5,40,.4));
+  transition:transform .5s cubic-bezier(.2,1.5,.5,1),opacity .4s ease;
+}
+.decor-prop.is-shown{opacity:1;transform:translate(-50%,-50%) scale(1)}
+
+/* Interactive Floating Balloons */
+.balloon-layer{
+  position:absolute;
+  inset:0;
+  z-index:9;
+  pointer-events:none;
+}
+.party-balloon{
+  position:absolute;
+  width:clamp(42px,6.2vw,68px);
+  height:clamp(54px,7.8vw,86px);
+  transform:translate(-50%,-50%) scale(0);
+  opacity:0;
+  pointer-events:auto;
+  cursor:grab;
+  background:transparent;
+  padding:0;
+  filter:drop-shadow(0 5px 5px rgba(26,7,48,.38));
+  transition:transform .45s cubic-bezier(.2,1.5,.5,1),opacity .35s ease;
+}
+.party-balloon.is-shown{
+  opacity:1;
+  transform:translate(-50%,-50%) scale(1);
+  animation:balloonFloat 3.4s ease-in-out infinite alternate;
+}
+.party-balloon.is-popped{
+  opacity:0!important;
+  transform:translate(-50%,-50%) scale(1.6)!important;
+  pointer-events:none;
+}
+@keyframes balloonFloat{
+  0%{margin-top:0;transform:translate(-50%,-50%) rotate(-4deg)}
+  100%{margin-top:-12px;transform:translate(-50%,-50%) rotate(4deg)}
+}
+
+/* Presents Corner (Left Cubby Area) */
+.presents-zone{
+  position:absolute;
+  left:10%;
+  top:52%;
+  width:21%;
+  height:25%;
+  z-index:10;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  gap:4%;
+  opacity:0;
+  transform:translateY(16px) scale(.85);
+  transition:opacity .6s ease,transform .6s cubic-bezier(.2,1.4,.5,1);
+  pointer-events:none;
+}
+.presents-zone.is-shown{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+.gift-btn{
+  position:relative;
+  width:31%;
+  aspect-ratio:1 / 1.05;
+  background:transparent;
+  padding:0;
+  filter:drop-shadow(0 5px 6px rgba(24,6,48,.45));
+  transition:transform .2s cubic-bezier(.2,1.5,.5,1);
+}
+.gift-btn:hover{transform:translateY(-4px) scale(1.06)}
+.gift-btn:active{transform:scale(.92)}
+.gift-btn.is-wobble{animation:giftWobble .45s ease}
+@keyframes giftWobble{
+  0%,100%{transform:rotate(0)}
+  25%{transform:rotate(-9deg) scale(1.08)}
+  75%{transform:rotate(9deg) scale(1.08)}
+}
+.gift-toy{
+  position:absolute;
+  left:50%;
+  top:-34%;
+  transform:translate(-50%,12px) scale(0);
+  width:85%;
+  pointer-events:none;
+  opacity:0;
+  transition:transform .5s cubic-bezier(.2,1.6,.5,1),opacity .35s ease;
+}
+.gift-btn.is-open .gift-toy{
+  opacity:1;
+  transform:translate(-50%,0) scale(1);
+  animation:toyBob 1.8s ease-in-out infinite alternate;
+}
+@keyframes toyBob{0%{margin-top:0}100%{margin-top:-6px}}
+
+/* Cake Table (Right Purple-Skirted Table) */
+.cake-zone{
+  position:absolute;
+  left:79.5%;
+  top:43%;
+  width:15%;
+  height:24%;
+  z-index:10;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-end;
+  opacity:0;
+  transform:translateY(18px) scale(.8);
+  transition:opacity .65s ease,transform .65s cubic-bezier(.2,1.4,.5,1);
+  pointer-events:none;
+}
+.cake-zone.is-shown{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+.cake-btn{
+  width:100%;
+  height:100%;
+  background:transparent;
+  padding:0;
+  position:relative;
+  filter:drop-shadow(0 6px 8px rgba(25,5,46,.45));
+  transition:transform .16s ease;
+}
+.cake-btn:active{transform:scale(.94)}
+.flame{animation:flicker .35s ease-in-out infinite alternate;transform-origin:center bottom}
+@keyframes flicker{0%{transform:scaleY(1) skewX(-3deg)}100%{transform:scaleY(1.16) skewX(4deg)}}
+.candles-out .flame{opacity:0!important;animation:none}
+
+/* Flying cake slice */
+.flying-slice{
+  position:absolute;
+  z-index:15;
+  width:38px;
+  height:38px;
+  pointer-events:none;
+  transition:left .65s cubic-bezier(.2,.9,.3,1),top .65s cubic-bezier(.2,.9,.3,1),transform .65s ease,opacity .25s ease;
+}
+
+/* ==================== CHARACTERS STAGE ==================== */
+.characters-stage{
+  position:absolute;
+  left:18%;
+  right:18%;
+  bottom:8%;
+  height:52%;
+  z-index:8;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-around;
+  pointer-events:none;
+}
+.char-slot{
+  position:relative;
+  width:31%;
+  max-width:190px;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-end;
+  opacity:0;
+  transform:translateY(36px) scale(.85);
+  transition:opacity .55s ease,transform .65s cubic-bezier(.2,1.45,.5,1);
+}
+.char-slot.is-entered{
+  opacity:1;
+  transform:translateY(0) scale(1);
+  pointer-events:auto;
+}
+.char-btn{
+  position:relative;
+  width:100%;
+  height:86%;
+  background:transparent;
+  padding:0;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  transform-origin:50% 92%;
+}
+.char-btn svg{
+  width:100%;
+  height:100%;
+  overflow:visible;
+  filter:drop-shadow(0 8px 6px rgba(24,7,48,.42));
+}
+.char-name{
+  margin-top:2px;
+  background:rgba(38,11,72,.78);
+  color:#fff;
+  border:1.5px solid rgba(255,255,255,.35);
+  border-radius:99px;
+  padding:2px 10px;
+  font-weight:900;
+  font-size:clamp(.68rem,1.6vw,.92rem);
+  letter-spacing:.02em;
+  box-shadow:0 3px 8px rgba(0,0,0,.3);
+}
+.char-slot[data-char="aria"] .char-name{
+  background:linear-gradient(90deg,#2fa972,#45c98e);
+  border-color:#ffe58a;
+}
+
+/* Speech Bubble */
+.speech-pop{
+  position:absolute;
+  bottom:96%;
+  left:50%;
+  transform:translateX(-50%) translateY(8px) scale(.75);
+  background:#fff;
+  color:#481b6e;
+  font-weight:900;
+  font-size:clamp(.68rem,1.6vw,.9rem);
+  padding:5px 10px;
+  border-radius:14px;
+  white-space:nowrap;
+  box-shadow:0 6px 16px rgba(20,5,40,.35);
+  border:2px solid #ffd4ec;
+  opacity:0;
+  pointer-events:none;
+  z-index:20;
+  transition:opacity .22s ease,transform .25s cubic-bezier(.2,1.5,.5,1);
+}
+.speech-pop.is-shown{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}
+
+/* Character SVG Animations */
+.char-svg .char-body-group{transform-origin:60px 140px;animation:idleBreath 2.6s ease-in-out infinite alternate}
+.char-svg .eye-lid{transform-origin:center;animation:eyeBlink 4.2s infinite}
+.char-slot[data-char="june"] .char-svg .eye-lid{animation-delay:-1.5s}
+.char-slot[data-char="aria"] .char-svg .eye-lid{animation-delay:-2.8s}
+@keyframes idleBreath{0%{transform:translateY(0) scaleY(1)}100%{transform:translateY(-3px) scaleY(1.018)}}
+@keyframes eyeBlink{0%,92%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+
+/* Dance Modes */
+.char-btn.dance-bounce{animation:dBounce .58s ease-in-out infinite alternate}
+.char-btn.dance-spin{animation:dSpin 1.1s ease-in-out infinite}
+.char-btn.dance-wave{animation:dWave .62s ease-in-out infinite alternate}
+.char-btn.dance-jump{animation:dJump .52s cubic-bezier(.3,1.4,.5,1) infinite alternate}
+
+@keyframes dBounce{
+  0%{transform:translateY(0) rotate(-5deg) scale(1)}
+  50%{transform:translateY(-14px) rotate(4deg) scale(1.03)}
+  100%{transform:translateY(-2px) rotate(6deg) scale(1)}
+}
+@keyframes dSpin{
+  0%{transform:translateY(0) rotate(0deg) scale(1)}
+  35%{transform:translateY(-18px) rotate(-10deg) scale(1.05)}
+  65%{transform:translateY(-16px) rotate(12deg) scale(1.05)}
+  100%{transform:translateY(0) rotate(0deg) scale(1)}
+}
+@keyframes dWave{
+  0%{transform:skewX(-4deg) translateY(0)}
+  100%{transform:skewX(4deg) translateY(-10px)}
+}
+@keyframes dJump{
+  0%{transform:translateY(0) scale(1.04,.96)}
+  100%{transform:translateY(-24px) scale(.97,1.04)}
+}
+
+.char-btn.dance-wave .arm-l{animation:armSwingL .4s ease-in-out infinite alternate;transform-origin:38px 82px}
+.char-btn.dance-wave .arm-r{animation:armSwingR .4s ease-in-out infinite alternate;transform-origin:82px 82px}
+.char-btn.dance-bounce .arm-l{animation:armSwingL .55s ease-in-out infinite alternate;transform-origin:38px 82px}
+.char-btn.dance-bounce .arm-r{animation:armSwingR .55s ease-in-out infinite alternate;transform-origin:82px 82px}
+@keyframes armSwingL{0%{transform:rotate(8deg)}100%{transform:rotate(52deg)}}
+@keyframes armSwingR{0%{transform:rotate(-8deg)}100%{transform:rotate(-52deg)}}
+
+/* Tap Reaction */
+.char-btn.react-pop{animation:charReact .65s cubic-bezier(.2,1.6,.5,1)!important}
+@keyframes charReact{
+  0%{transform:scale(1)}
+  35%{transform:translateY(-24px) scale(1.12) rotate(-6deg)}
+  70%{transform:translateY(-10px) scale(1.06) rotate(6deg)}
+  100%{transform:translateY(0) scale(1) rotate(0)}
+}
+
+/* Interactive Bubbles */
+.bubbles-layer{
+  position:absolute;
+  inset:0;
+  z-index:12;
+  pointer-events:none;
+  overflow:hidden;
+}
+.pop-bubble{
+  position:absolute;
+  bottom:-55px;
+  border-radius:50%;
+  border:2.5px solid rgba(255,255,255,.8);
+  background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.75),rgba(145,233,255,.35) 55%,rgba(255,154,230,.35));
+  box-shadow:inset 0 0 10px rgba(255,255,255,.65);
+  pointer-events:auto;
+  cursor:pointer;
+  animation:bubbleRise 6.2s linear forwards;
+}
+.pop-bubble:active{transform:scale(1.35);opacity:0}
+@keyframes bubbleRise{
+  0%{transform:translateY(0) translateX(0)}
+  50%{transform:translateY(-260px) translateX(18px)}
+  100%{transform:translateY(-560px) translateX(-14px);opacity:.15}
+}
+
+/* Canvas Particle Layer */
+#partyCanvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:13;
+  pointer-events:none;
+}
+
+/* Phase A Celebration Banner */
+.celebration-banner{
+  position:absolute;
+  left:50%;
+  top:14%;
+  transform:translate(-50%,-16px) scale(.85);
+  z-index:16;
+  background:linear-gradient(120deg,rgba(78,20,126,.92),rgba(218,54,146,.92));
+  border:2.5px solid #ffe58a;
+  border-radius:20px;
+  padding:10px 22px;
+  text-align:center;
+  box-shadow:0 10px 28px rgba(15,3,30,.55);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .5s ease,transform .5s cubic-bezier(.2,1.5,.5,1);
+}
+.celebration-banner.is-shown{opacity:1;transform:translate(-50%,0) scale(1)}
+.celebration-banner h2{color:#fff;font-size:clamp(1.05rem,3.4vw,1.7rem);margin:0;text-shadow:0 2px 8px rgba(0,0,0,.4)}
+.celebration-banner p{color:#ffe58a;font-weight:850;font-size:clamp(.75rem,2vw,.95rem);margin-top:2px}
+
+.skip-intro-btn{
+  position:absolute;
+  right:12px;
+  bottom:12px;
+  z-index:18;
+  background:rgba(28,8,54,.78);
+  color:#fff;
+  border:1.5px solid rgba(255,255,255,.4);
+  border-radius:99px;
+  padding:7px 14px;
+  font-size:.82rem;
+  font-weight:800;
+}
+
+/* Hotspot hint pulse */
+.hotspot-hint{
+  position:absolute;
+  top:-6px;
+  right:-4px;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  background:#ffe58a;
+  color:#512078;
+  font-size:11px;
+  font-weight:950;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 0 10px #ffe58a;
+  pointer-events:none;
+  animation:hintPulse 1.6s ease-in-out infinite;
+}
+@keyframes hintPulse{0%,100%{transform:scale(.9)}50%{transform:scale(1.18)}}
+
+/* Bottom Play Dock */
+.play-dock{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:8px;
+}
+.dock-btn{
+  background:linear-gradient(180deg,#fff,#f3e5ff);
+  color:#4c1a73;
+  border-radius:16px;
+  padding:10px 6px;
+  min-height:62px;
+  font-weight:900;
+  font-size:clamp(.74rem,2vw,.9rem);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  box-shadow:0 4px 0 #b98ce0,0 6px 14px rgba(14,3,30,.35);
+  transition:transform .08s ease,box-shadow .08s ease;
+}
+.dock-btn .dock-ico{font-size:1.4rem;line-height:1}
+.dock-btn:active{transform:translateY(3px);box-shadow:0 1px 0 #b98ce0}
+.dock-btn.is-active{
+  background:linear-gradient(180deg,#ffe58a,#ffc55c);
+  color:#4c1a73;
+  box-shadow:0 4px 0 #c9861f;
+}
+
+.party-footer-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+  padding:2px 4px;
+}
+.explore-tip{
+  font-size:.86rem;
+  font-weight:750;
+  color:#f5dfff;
+}
+.replay-btn{
+  background:rgba(255,255,255,.15);
+  color:#fff;
+  border:1.5px solid rgba(255,255,255,.35);
+  border-radius:99px;
+  padding:8px 16px;
+  font-weight:800;
+  font-size:.86rem;
+}
+
+@media(max-width:640px){
+  main{padding:12px}
+  #finish{padding:8px 8px 14px}
+  .party-world{aspect-ratio:16 / 10.5;min-height:260px;border-radius:18px}
+  .characters-stage{left:14%;right:14%;bottom:7%;height:54%}
+  .presents-zone{left:5%;top:50%;width:23%}
+  .cake-zone{left:77%;top:41%;width:18%}
+  .play-dock{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+  .dock-btn{min-height:56px;padding:7px 3px;border-radius:13px}
+  .hud-btn{padding:6px 10px;font-size:.76rem;min-height:34px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{
+    animation-duration:.001ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important;
+    transition-duration:.05s!important;
+  }
+}
+</style>
+</head>
+<body>
+<div class="game">
+  <header>
+    <div class="brand">🎉 Aria to the Party!</div>
+    <div class="header-right">
+      <div class="pill" id="stagePill">Let's get ready!</div>
+    </div>
+  </header>
+
+  <main id="welcome" class="center">
+    <div class="hero">🎈🎁🧁</div>
+    <h1>Aria to the Party!</h1>
+    <p class="subtitle">A party is waiting! Help Aria find the supplies. Count carefully, collect everything, and then celebrate!</p>
+    <div class="guide" style="text-align:left">
+      <div class="guide-face">🦄</div>
+      <div class="guide-text">Hi, Aria! I'm your party helper. We'll find everything together. Ready to play?<small>Tap the party supplies you need.</small></div>
+    </div>
+    <button class="primary" id="startBtn" type="button">Let's go!</button>
+  </main>
+
+  <main id="play" class="hidden">
+    <div class="guide">
+      <div class="guide-face">🦄</div>
+      <div>
+        <div class="guide-text" id="guideText">Let's find the party supplies!</div>
+        <small id="guideHint">Tap the items you need.</small>
+      </div>
+    </div>
+    <div class="task">
+      <div class="target"><span class="emoji" id="targetEmoji">🎈</span><span id="targetName">Balloons</span></div>
+      <div class="counter"><span id="countNow">0</span> / <span id="countGoal">5</span></div>
+    </div>
+    <div class="progress"><div id="progressFill"></div></div>
+    <section class="scene" id="scene"></section>
+    <div class="controls">
+      <button class="secondary" id="repeatBtn" type="button">🔊 Hear that again</button>
+      <button class="secondary" id="soundBtn" type="button">Voice: on</button>
+    </div>
+  </main>
+
+  <main id="finish" class="hidden">
+    <div class="party-shell">
+      <div class="party-hud">
+        <div class="party-title-group">
+          <span class="party-badge" id="phaseBadge">CELEBRATION</span>
+          <div class="party-status" id="partyStatus">Welcome to Aria's Party!</div>
+        </div>
+        <div class="hud-controls">
+          <button class="hud-btn is-on" id="audioToggleBtn" type="button" aria-label="Toggle party sound and music">🔊 Sound: On</button>
+          <button class="hud-btn" id="replayIntroBtn" type="button" aria-label="Replay grand celebration">✨ Replay Intro</button>
+        </div>
+      </div>
+
+      <div class="party-world is-dim" id="partyWorld" data-mood="disco">
+        <img class="room-bg" src="assets/party-room.png" alt="Aria's colorful birthday party room">
+        <div class="room-dimmer" aria-hidden="true"></div>
+
+        <div class="lighting-overlay" aria-hidden="true">
+          <div class="beam b1"></div>
+          <div class="beam b2"></div>
+          <div class="beam b3"></div>
+          <div class="beam b4"></div>
+        </div>
+        <div class="disco-glint" aria-hidden="true"></div>
+
+        <div class="wall-sign" id="wallSign" aria-hidden="true">
+          <strong>HAPPY BIRTHDAY</strong>
+          <span>★ ARIA! ★</span>
+        </div>
+
+        <button class="dj-hotspot" id="djHotspot" type="button" aria-label="DJ Booth: tap to switch music track and play DJ sound">
+          <div class="dj-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        </button>
+
+        <div class="room-decor" id="roomDecor" aria-hidden="true"></div>
+        <div class="balloon-layer" id="balloonLayer" aria-label="Interactive party balloons"></div>
+
+        <div class="presents-zone" id="presentsZone" aria-label="Birthday presents"></div>
+
+        <div class="cake-zone" id="cakeZone">
+          <button class="cake-btn" id="cakeBtn" type="button" aria-label="Birthday cake: tap to blow out candles or serve a slice">
+            <span class="hotspot-hint" id="cakeHint">★</span>
+          </button>
+        </div>
+
+        <div class="characters-stage" id="charactersStage">
+          <div class="char-slot" id="slot-ella" data-char="ella">
+            <div class="speech-pop" id="speech-ella">Yay!</div>
+            <button class="char-btn" id="btn-ella" type="button" aria-label="Tap Ella to dance and react"></button>
+            <div class="char-name">Ella</div>
+          </div>
+          <div class="char-slot" id="slot-aria" data-char="aria">
+            <div class="speech-pop" id="speech-aria">Best party ever!</div>
+            <button class="char-btn" id="btn-aria" type="button" aria-label="Tap Aria to dance and react"></button>
+            <div class="char-name">Aria</div>
+          </div>
+          <div class="char-slot" id="slot-june" data-char="june">
+            <div class="speech-pop" id="speech-june">Woohoo!</div>
+            <button class="char-btn" id="btn-june" type="button" aria-label="Tap June to dance and react"></button>
+            <div class="char-name">June</div>
+          </div>
+        </div>
+
+        <div class="bubbles-layer" id="bubblesLayer" aria-hidden="true"></div>
+        <canvas id="partyCanvas" aria-hidden="true"></canvas>
+
+        <div class="celebration-banner" id="celebrationBanner" role="status">
+          <h2>🎉 Aria's AMAZING Party! 🎉</h2>
+          <p id="bannerSub">You found all the supplies! Tap anything to play!</p>
+        </div>
+
+        <button class="skip-intro-btn hidden" id="skipIntroBtn" type="button">Skip to Play ▶</button>
+      </div>
+
+      <div class="play-dock" role="toolbar" aria-label="Party playground controls">
+        <button class="dock-btn" id="musicBtn" type="button"><span class="dock-ico">🎵</span><span id="musicBtnLabel">Music</span></button>
+        <button class="dock-btn" id="danceBtn" type="button"><span class="dock-ico">💃</span><span>Dance</span></button>
+        <button class="dock-btn" id="bubbleBtn" type="button"><span class="dock-ico">🫧</span><span>Bubbles</span></button>
+        <button class="dock-btn" id="fireworksBtn" type="button"><span class="dock-ico">🎆</span><span>Fireworks</span></button>
+        <button class="dock-btn" id="lightsBtn" type="button"><span class="dock-ico">💡</span><span id="lightsBtnLabel">Lights</span></button>
+      </div>
+
+      <div class="party-footer-row">
+        <div class="explore-tip" id="exploreTip">Tip: Tap Ella, Aria, June, the cake, presents, balloons, or the DJ booth!</div>
+        <button class="replay-btn" id="againBtn" type="button">↺ Play Counting Game Again</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>Made for Aria • Count, find, collect, celebrate!</footer>
+</div>
+
+<script>
+/* ==================== 1. EXISTING COUNTING GAME (PRESERVED) ==================== */
+const rounds = [
+  {name:"pink balloons",label:"Balloons",emoji:"🎈",goal:5,items:["🎈","🎁","🧁","🎈","🎀","🎈","🍭","🎈","🎂","🎈","🌸","🎁","🧁","🎈","🎀","🍬","🎈","🎂"]},
+  {name:"cupcakes",label:"Cupcakes",emoji:"🧁",goal:7,items:["🧁","🎈","🍬","🧁","🎀","🧁","🎂","🎁","🧁","🍭","🧁","🌸","🧁","🎈","🧁","🎁","🧁","🎀"]},
+  {name:"party hats",label:"party hats",emoji:"🥳",goal:10,items:["🥳","🎈","🎁","🥳","🧁","🎀","🥳","🎂","🥳","🍬","🎁","🥳","🌸","🥳","🎈","🥳","🧁","🥳","🎀","🥳","🎁","🥳"]}
+];
+let roundIndex = 0, collected = 0, voiceOn = true, lastMessage = "", inventory = [];
+const $ = id => document.getElementById(id);
+const prefersReducedMotion = () => window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function bindTap(el, handler){
+  el.addEventListener("click", e => { e.preventDefault(); handler(e); });
+}
+
+function speak(m){
+  lastMessage = m;
+  try{
+    if(voiceOn && "speechSynthesis" in window && window.SpeechSynthesisUtterance){
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(m);
+      u.rate = .88; u.pitch = 1.12; u.lang = "en-US";
+      window.speechSynthesis.speak(u);
+    }
+  }catch(e){}
+}
+
+function show(id){
+  ["welcome","play","finish"].forEach(x => $(x).classList.toggle("hidden", x !== id));
+}
+
+function startGame(){
+  AudioEngine.unlock();
+  roundIndex = 0;
+  inventory = [];
+  show("play");
+  loadRound();
+}
+
+function loadRound(){
+  collected = 0;
+  const r = rounds[roundIndex];
+  $("stagePill").textContent = `Supply ${roundIndex+1} of ${rounds.length}`;
+  $("targetEmoji").textContent = r.emoji;
+  $("targetName").textContent = r.label;
+  $("countNow").textContent = 0;
+  $("countGoal").textContent = r.goal;
+  $("progressFill").style.width = "0%";
+  $("guideText").textContent = `Let's find ${r.goal} ${r.name}!`;
+  $("guideHint").textContent = "Count each one as you tap it.";
+  const scene = $("scene");
+  scene.innerHTML = "";
+  r.items.map((v,i)=>({v,i})).sort(()=>Math.random()-.5).forEach(it=>{
+    const b = document.createElement("button");
+    b.className = "object";
+    b.type = "button";
+    b.setAttribute("aria-label", it.v===r.emoji ? r.label : "Party item");
+    b.innerHTML = `<span class="obj-emoji">${it.v}</span>`;
+    bindTap(b, () => pick(b, it.v, r));
+    scene.appendChild(b);
+  });
+  speak(`Aria, let's find ${r.goal} ${r.name}. Tap the ${r.name} you see.`);
+}
+
+function pick(b, item, r){
+  AudioEngine.unlock();
+  if(b.classList.contains("collected")) return;
+  if(item !== r.emoji){
+    b.classList.remove("wrong");
+    void b.offsetWidth;
+    b.classList.add("wrong");
+    AudioEngine.playSoftBoop();
+    $("guideText").textContent = `That's a ${item}, but we're looking for ${r.name}.`;
+    speak(`Good looking! That's not what we need right now. Let's find ${r.name}.`);
+    return;
+  }
+  b.classList.add("collected");
+  collected++;
+  inventory.push({emoji:item, name:r.label, kind:r.label});
+  $("countNow").textContent = collected;
+  $("progressFill").style.width = `${collected / r.goal * 100}%`;
+  AudioEngine.playChime(440 + collected * 35);
+  $("guideText").textContent = collected < r.goal ? `You found one! Let's count: ${collected}.` : `You found all ${r.goal}!`;
+  speak(collected < r.goal ? `${collected}! You found ${collected}. ${r.goal-collected} more to go!` : `You found all ${r.goal} ${r.name}!`);
+  if(collected === r.goal){
+    setTimeout(() => {
+      roundIndex++;
+      if(roundIndex < rounds.length) loadRound();
+      else finishGame();
+    }, 900);
+  }
+}
+
+/* ==================== 2. AUDIO ENGINE (OPTIONAL & USER-CONTROLLED) ==================== */
+const AudioEngine = (() => {
+  let ctx = null;
+  let muted = false;
+  let musicOn = false;
+  let trackIndex = 0;
+  let timer = null;
+  let step = 0;
+
+  const tracks = [
+    {
+      name: "Disco",
+      bpm: 124,
+      bass: [55,55,73.4,82.4,55,55,73.4,98],
+      lead: [440,523.25,659.25,587.33,523.25,392,440,523.25],
+      wave: "sawtooth"
+    },
+    {
+      name: "Happy Pop",
+      bpm: 116,
+      bass: [65.4,65.4,82.4,98,73.4,73.4,98,110],
+      lead: [523.25,659.25,783.99,659.25,587.33,698.46,659.25,523.25],
+      wave: "triangle"
+    },
+    {
+      name: "Space Party",
+      bpm: 128,
+      bass: [49,49,73.4,65.4,55,55,82.4,73.4],
+      lead: [587.33,783.99,880,783.99,659.25,587.33,523.25,659.25],
+      wave: "sine"
+    }
+  ];
+
+  function ensureCtx(){
+    if(!ctx){
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if(AC) ctx = new AC();
+    }
+    return ctx;
+  }
+
+  async function unlock(){
+    try{
+      const c = ensureCtx();
+      if(c && c.state === "suspended") await c.resume();
+    }catch(e){}
+  }
+
+  function tone(freq, dur, type="triangle", vol=0.04, when=0){
+    if(muted) return;
+    try{
+      const c = ensureCtx();
+      if(!c || c.state !== "running") return;
+      const now = c.currentTime + when;
+      const o = c.createOscillator();
+      const g = c.createGain();
+      o.type = type;
+      o.frequency.setValueAtTime(freq, now);
+      g.gain.setValueAtTime(0.0001, now);
+      g.gain.exponentialRampToValueAtTime(vol, now + 0.012);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+      o.connect(g);
+      g.connect(c.destination);
+      o.start(now);
+      o.stop(now + dur + 0.03);
+    }catch(e){}
+  }
+
+  function kick(when=0){
+    if(muted) return;
+    try{
+      const c = ensureCtx();
+      if(!c || c.state !== "running") return;
+      const now = c.currentTime + when;
+      const o = c.createOscillator();
+      const g = c.createGain();
+      o.type = "sine";
+      o.frequency.setValueAtTime(130, now);
+      o.frequency.exponentialRampToValueAtTime(42, now + 0.13);
+      g.gain.setValueAtTime(0.16, now);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+      o.connect(g);
+      g.connect(c.destination);
+      o.start(now);
+      o.stop(now + 0.17);
+    }catch(e){}
+  }
+
+  function tick(){
+    if(!musicOn) return;
+    const tr = tracks[trackIndex];
+    const t = 0.01;
+    const beatNo = step % 16;
+    if(beatNo % 4 === 0) kick(t);
+    if(beatNo % 4 === 2) tone(190, 0.055, "triangle", 0.035, t);
+    if(beatNo % 2 === 0) tone(900, 0.03, "square", 0.01, t);
+    const bassFreq = tr.bass[Math.floor(beatNo / 2)];
+    tone(bassFreq, 0.16, tr.wave, 0.045, t);
+    if(beatNo % 2 === 0){
+      const note = tr.lead[(step / 2 | 0) % tr.lead.length];
+      tone(note, 0.13, "triangle", 0.028, t + 0.025);
+    }
+    step++;
+    timer = setTimeout(tick, 60000 / tr.bpm / 4);
+  }
+
+  async function startMusic(){
+    await unlock();
+    if(musicOn) return;
+    musicOn = true;
+    step = 0;
+    tick();
+    syncMusicUI();
+  }
+
+  function stopMusic(){
+    musicOn = false;
+    clearTimeout(timer);
+    syncMusicUI();
+  }
+
+  async function toggleMusic(){
+    if(musicOn) stopMusic();
+    else await startMusic();
+  }
+
+  async function nextTrack(){
+    await unlock();
+    trackIndex = (trackIndex + 1) % tracks.length;
+    if(!musicOn) await startMusic();
+    playScratch();
+    syncMusicUI();
+    return tracks[trackIndex].name;
+  }
+
+  function setMuted(m){
+    muted = m;
+    if(muted){
+      if("speechSynthesis" in window) window.speechSynthesis.cancel();
+    }
+    syncMusicUI();
+  }
+
+  function syncMusicUI(){
+    const world = $("partyWorld");
+    const btn = $("musicBtn");
+    const lbl = $("musicBtnLabel");
+    const ab = $("audioToggleBtn");
+    if(world) world.classList.toggle("music-playing", musicOn && !muted);
+    if(btn) btn.classList.toggle("is-active", musicOn && !muted);
+    if(lbl) lbl.textContent = musicOn ? `♪ ${tracks[trackIndex].name}` : "Music";
+    if(ab){
+      ab.textContent = muted ? "🔇 Sound: Off" : "🔊 Sound: On";
+      ab.classList.toggle("is-on", !muted);
+    }
+  }
+
+  function playChime(freq=523.25){ tone(freq, 0.18, "sine", 0.06, 0); }
+  function playSoftBoop(){ tone(220, 0.12, "sine", 0.035, 0); }
+  function playPop(){
+    tone(480, 0.05, "sine", 0.08, 0);
+    tone(740, 0.07, "triangle", 0.06, 0.02);
+  }
+  function playBubble(){
+    tone(520, 0.06, "sine", 0.05, 0);
+    tone(880, 0.08, "sine", 0.05, 0.04);
+  }
+  function playUnwrap(){
+    [523,659,784,1046].forEach((f,i)=>tone(f, 0.16, "triangle", 0.055, i*0.06));
+  }
+  function playFirework(){
+    tone(220, 0.18, "sawtooth", 0.03, 0);
+    [880,1046,1318].forEach((f,i)=>tone(f, 0.22, "sine", 0.045, 0.08 + i*0.04));
+  }
+  function playScratch(){
+    tone(320, 0.06, "sawtooth", 0.04, 0);
+    tone(620, 0.07, "sawtooth", 0.04, 0.05);
+  }
+  function playCheer(){
+    [523,659,784,1046,1318].forEach((f,i)=>tone(f, 0.22, "triangle", 0.05, i*0.07));
+  }
+
+  return {
+    unlock, startMusic, stopMusic, toggleMusic, nextTrack,
+    setMuted, isMuted: () => muted, isMusicOn: () => musicOn,
+    currentTrack: () => tracks[trackIndex].name,
+    playChime, playSoftBoop, playPop, playBubble, playUnwrap, playFirework, playScratch, playCheer
+  };
+})();
+
+/* ==================== 3. CANVAS PARTICLE ENGINE (60FPS CONFETTI & FIREWORKS) ==================== */
+const Particles = (() => {
+  let canvas, ctx, raf = null;
+  const items = [];
+  const colors = ["#ff70bd","#ffe58a","#54a9ff","#69d89d","#c285ff","#ff985a","#ffffff"];
+
+  function init(){
+    canvas = $("partyCanvas");
+    ctx = canvas.getContext("2d");
+    resize();
+    window.addEventListener("resize", resize);
+  }
+
+  function resize(){
+    if(!canvas) return;
+    const rect = canvas.parentElement.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.max(1, Math.floor(rect.width * dpr));
+    canvas.height = Math.max(1, Math.floor(rect.height * dpr));
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function ensureLoop(){
+    if(raf) return;
+    const step = () => {
+      const w = canvas.clientWidth || 600;
+      const h = canvas.clientHeight || 340;
+      ctx.clearRect(0, 0, w, h);
+      for(let i = items.length - 1; i >= 0; i--){
+        const p = items[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += p.g;
+        p.vx *= 0.99;
+        p.rot += p.vr;
+        p.life -= p.decay;
+        if(p.life <= 0 || p.y > h + 30){
+          items.splice(i, 1);
+          continue;
+        }
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, Math.min(1, p.life));
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.fillStyle = p.color;
+        if(p.shape === "star"){
+          ctx.beginPath();
+          for(let s=0;s<5;s++){
+            const a = (s*Math.PI*2)/5 - Math.PI/2;
+            const r1 = p.size, r2 = p.size*0.45;
+            ctx.lineTo(Math.cos(a)*r1, Math.sin(a)*r1);
+            ctx.lineTo(Math.cos(a+Math.PI/5)*r2, Math.sin(a+Math.PI/5)*r2);
+          }
+          ctx.closePath();
+          ctx.fill();
+        } else if(p.shape === "circle"){
+          ctx.beginPath();
+          ctx.arc(0, 0, p.size*0.55, 0, Math.PI*2);
+          ctx.fill();
+        } else {
+          ctx.fillRect(-p.size/2, -p.size*0.32, p.size, p.size*0.64);
+        }
+        ctx.restore();
+      }
+      if(items.length > 0){
+        raf = requestAnimationFrame(step);
+      } else {
+        raf = null;
+      }
+    };
+    raf = requestAnimationFrame(step);
+  }
+
+  function confetti(count=55){
+    if(prefersReducedMotion() || !canvas) return;
+    resize();
+    const w = canvas.clientWidth || 600;
+    for(let i=0;i<count;i++){
+      items.push({
+        x: Math.random() * w,
+        y: -10 - Math.random() * 40,
+        vx: (Math.random() - 0.5) * 3.2,
+        vy: 1.6 + Math.random() * 2.8,
+        g: 0.055,
+        rot: Math.random() * Math.PI * 2,
+        vr: (Math.random() - 0.5) * 0.16,
+        size: 6 + Math.random() * 6,
+        color: colors[i % colors.length],
+        shape: i % 3 === 0 ? "star" : "rect",
+        life: 1.2 + Math.random() * 0.6,
+        decay: 0.006
+      });
+    }
+    ensureLoop();
+  }
+
+  function burstAt(nx, ny, count=26, shape="star"){
+    if(prefersReducedMotion() || !canvas) return;
+    resize();
+    const w = canvas.clientWidth || 600;
+    const h = canvas.clientHeight || 340;
+    const cx = nx * w;
+    const cy = ny * h;
+    for(let i=0;i<count;i++){
+      const ang = (Math.PI * 2 * i) / count + Math.random() * 0.3;
+      const spd = 2.2 + Math.random() * 4.5;
+      items.push({
+        x: cx, y: cy,
+        vx: Math.cos(ang) * spd,
+        vy: Math.sin(ang) * spd - 0.8,
+        g: 0.09,
+        rot: Math.random() * 6,
+        vr: (Math.random() - 0.5) * 0.2,
+        size: 5 + Math.random() * 6,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        shape: shape,
+        life: 1.0,
+        decay: 0.016
+      });
+    }
+    ensureLoop();
+  }
+
+  function fireworkShow(){
+    AudioEngine.playFirework();
+    burstAt(0.26, 0.28, 30, "star");
+    setTimeout(() => { AudioEngine.playFirework(); burstAt(0.74, 0.25, 30, "circle"); }, 220);
+    setTimeout(() => { AudioEngine.playFirework(); burstAt(0.5, 0.2, 36, "star"); }, 460);
+  }
+
+  function clear(){
+    items.length = 0;
+    if(raf){ cancelAnimationFrame(raf); raf = null; }
+    if(ctx && canvas) ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  return { init, confetti, burstAt, fireworkShow, clear };
+})();
+
+/* ==================== 4. CHARACTERS (ELLA, ARIA, JUNE) ==================== */
+const PartyCharacters = (() => {
+  const profiles = {
+    ella: {
+      name: "Ella",
+      dress: "#438de5",
+      dressShade: "#2f70c4",
+      hairTip: "#54a9ff",
+      accessory: "bow",
+      lines: ["Let's groove!", "High five! ✋", "Spin time!", "Blue sparkles!"]
+    },
+    aria: {
+      name: "Aria",
+      dress: "#50bd83",
+      dressShade: "#379c67",
+      hairTip: "#69d89d",
+      accessory: "crown",
+      lines: ["Best birthday ever!", "Thank you, friends!", "Let's dance!", "Yay! 🎉"]
+    },
+    june: {
+      name: "June",
+      dress: "#ff79b9",
+      dressShade: "#df5497",
+      hairTip: "#ff7cba",
+      accessory: "starclip",
+      lines: ["Woohoo! 💖", "Party time!", "So sparkly!", "Jump with me!"]
+    }
+  };
+
+  const danceClasses = ["dance-bounce","dance-spin","dance-wave","dance-jump"];
+  const danceNames = ["Bounce Groove!","Twirl Spin!","Disco Wave!","Jump Party!"];
+  let currentDance = 0;
+  let speechTimers = {};
+
+  function buildSVG(id){
+    const p = profiles[id];
+    const isAria = id === "aria";
+    const acc = p.accessory === "crown"
+      ? `<path d="M40 20 L46 8 L54 17 L60 5 L66 17 L74 8 L80 20 Z" fill="#ffe58a" stroke="#b67b14" stroke-width="2" stroke-linejoin="round"/><circle cx="60" cy="14" r="2.5" fill="#ff70bd"/>`
+      : p.accessory === "bow"
+      ? `<path d="M35 24 Q24 14 27 28 Q34 31 41 26 Z M41 26 Q50 14 48 28 Q42 32 41 26 Z" fill="#54a9ff" stroke="#245399" stroke-width="1.8"/><circle cx="40" cy="25" r="3" fill="#ffe58a"/>`
+      : `<path d="M77 20 L80 25 L86 26 L81 30 L82 36 L77 33 L72 36 L73 30 L68 26 L74 25 Z" fill="#ffe58a" stroke="#c74386" stroke-width="1.6"/>`;
+
+    return `
+    <svg class="char-svg" viewBox="0 0 120 150" role="img" aria-label="${p.name}">
+      <ellipse cx="60" cy="143" rx="28" ry="6" fill="rgba(25,7,50,.28)"/>
+      <g class="char-body-group">
+        <!-- Legs -->
+        <rect x="44" y="108" width="11" height="28" rx="5.5" fill="#fff0f6" stroke="#633a56" stroke-width="2"/>
+        <rect x="65" y="108" width="11" height="28" rx="5.5" fill="#fff0f6" stroke="#633a56" stroke-width="2"/>
+        <!-- Shoes -->
+        <ellipse cx="48" cy="137" rx="8" ry="4.5" fill="${p.dressShade}" stroke="#40243d" stroke-width="2"/>
+        <ellipse cx="72" cy="137" rx="8" ry="4.5" fill="${p.dressShade}" stroke="#40243d" stroke-width="2"/>
+        <!-- Arms -->
+        <g class="arm-l">
+          <rect x="24" y="69" width="12" height="36" rx="6" transform="rotate(24 30 72)" fill="#f4c6a5" stroke="#633a56" stroke-width="2.2"/>
+        </g>
+        <g class="arm-r">
+          <rect x="84" y="69" width="12" height="36" rx="6" transform="rotate(-24 90 72)" fill="#f4c6a5" stroke="#633a56" stroke-width="2.2"/>
+        </g>
+        <!-- Dress -->
+        <path d="M44 68 L76 68 L90 114 Q60 121 30 114 Z" fill="${p.dress}" stroke="#40243d" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M48 68 L72 68 L76 80 Q60 85 44 80 Z" fill="${p.dressShade}" opacity=".35"/>
+        <circle cx="60" cy="84" r="4" fill="#ffe58a" opacity=".85"/>
+        <!-- Back Hair -->
+        <path d="M29 36 C25 58 29 74 39 74 L81 74 C91 74 95 58 91 36 Z" fill="#65402e" stroke="#40243d" stroke-width="2.5"/>
+        <!-- Head -->
+        <ellipse cx="60" cy="44" rx="24" ry="23" fill="#f4c6a5" stroke="#633a56" stroke-width="2.5"/>
+        <!-- Hair Bangs & Signature Colored Tip -->
+        <path d="M35 39 C35 18 85 18 85 39 C78 30 67 28 60 34 C52 28 42 30 35 39 Z" fill="#65402e" stroke="#40243d" stroke-width="2.4"/>
+        <path d="M36 39 Q60 44 84 39 Q74 33 60 36 Q46 33 36 39 Z" fill="${p.hairTip}"/>
+        ${acc}
+        <!-- Rosy Cheeks -->
+        <ellipse cx="43" cy="50" rx="4.5" ry="2.5" fill="#ff8fb8" opacity=".65"/>
+        <ellipse cx="77" cy="50" rx="4.5" ry="2.5" fill="#ff8fb8" opacity=".65"/>
+        <!-- Expressive Blinking Eyes -->
+        <g class="eye-lid">
+          <circle cx="49" cy="44" r="3.6" fill="#39213b"/>
+          <circle cx="50.2" cy="42.8" r="1.2" fill="#fff"/>
+          <circle cx="71" cy="44" r="3.6" fill="#39213b"/>
+          <circle cx="72.2" cy="42.8" r="1.2" fill="#fff"/>
+        </g>
+        <!-- Happy Smile -->
+        <path d="M52 53 Q60 61 68 53" fill="none" stroke="#9a405b" stroke-width="2.6" stroke-linecap="round"/>
+      </g>
+      ${isAria ? `<circle cx="96" cy="24" r="3" fill="#ffe58a" opacity=".8"/>` : ""}
+    </svg>`;
+  }
+
+  function renderAll(){
+    Object.keys(profiles).forEach(id => {
+      const btn = $("btn-" + id);
+      if(btn){
+        btn.innerHTML = buildSVG(id);
+      }
+    });
+  }
+
+  function say(id, text){
+    const pop = $("speech-" + id);
+    if(!pop) return;
+    pop.textContent = text;
+    pop.classList.add("is-shown");
+    clearTimeout(speechTimers[id]);
+    speechTimers[id] = setTimeout(() => pop.classList.remove("is-shown"), 2100);
+  }
+
+  function react(id, customLine){
+    const btn = $("btn-" + id);
+    if(!btn) return;
+    const p = profiles[id];
+    const line = customLine || p.lines[Math.floor(Math.random() * p.lines.length)];
+    say(id, line);
+    btn.classList.remove("react-pop");
+    void btn.offsetWidth;
+    btn.classList.add("react-pop");
+    setTimeout(() => btn.classList.remove("react-pop"), 680);
+
+    AudioEngine.unlock();
+    AudioEngine.playChime(id === "ella" ? 523 : id === "aria" ? 659 : 587);
+    const xMap = {ella: 0.28, aria: 0.5, june: 0.72};
+    Particles.burstAt(xMap[id] || 0.5, 0.52, 16, "star");
+    $("partyStatus").textContent = `${p.name}: "${line}"`;
+  }
+
+  function setDance(index){
+    currentDance = index % danceClasses.length;
+    const cls = danceClasses[currentDance];
+    Object.keys(profiles).forEach(id => {
+      const btn = $("btn-" + id);
+      if(!btn) return;
+      danceClasses.forEach(c => btn.classList.remove(c));
+      btn.classList.add(cls);
+    });
+    return danceNames[currentDance];
+  }
+
+  function nextDance(){
+    const label = setDance(currentDance + 1);
+    AudioEngine.playChime(659);
+    $("partyStatus").textContent = `Dance Move: ${label}`;
+    say("aria", label);
+  }
+
+  function clearDance(){
+    Object.keys(profiles).forEach(id => {
+      const btn = $("btn-" + id);
+      if(btn) danceClasses.forEach(c => btn.classList.remove(c));
+    });
+  }
+
+  function showSlot(id, visible){
+    const slot = $("slot-" + id);
+    if(slot) slot.classList.toggle("is-entered", visible);
+  }
+
+  return { renderAll, react, say, setDance, nextDance, clearDance, showSlot };
+})();
+
+/* ==================== 5. PARTY ACTIVITIES (MODULAR REGISTRY) ==================== */
+const PartyActivities = (() => {
+  const moods = [
+    {id:"disco", label:"Disco"},
+    {id:"gold", label:"Gold"},
+    {id:"neon", label:"Neon"},
+    {id:"starry", label:"Starry"}
+  ];
+  let moodIdx = 0;
+  let cakePhase = 0; // 0 = lit candles, 1 = blown out, 2..4 = serving slices, 5 = fresh cake
+  const giftSurprises = [
+    {
+      boxColor:"#ff6eb4", ribbon:"#ffe58a",
+      name:"Sparkle Crown",
+      toySvg:`<svg viewBox="0 0 60 45"><path d="M8 38 L14 12 L26 26 L30 7 L34 26 L46 12 L52 38 Z" fill="#ffe58a" stroke="#b67b14" stroke-width="2.5" stroke-linejoin="round"/><circle cx="30" cy="24" r="4" fill="#ff70bd"/></svg>`,
+      msg:"A Sparkle Crown for Aria!"
+    },
+    {
+      boxColor:"#54a9ff", ribbon:"#ffffff",
+      name:"Star Wand",
+      toySvg:`<svg viewBox="0 0 60 60"><path d="M12 50 L38 24" stroke="#ffe58a" stroke-width="5" stroke-linecap="round"/><path d="M40 6 L44 16 L55 17 L46 24 L49 35 L40 29 L31 35 L34 24 L25 17 L36 16 Z" fill="#ffe58a" stroke="#e88d14" stroke-width="2"/></svg>`,
+      msg:"A Magic Star Wand!"
+    },
+    {
+      boxColor:"#69d89d", ribbon:"#ff70bd",
+      name:"Party Plushie",
+      toySvg:`<svg viewBox="0 0 60 60"><circle cx="20" cy="18" r="8" fill="#ffb8dc" stroke="#8a3b69" stroke-width="2"/><circle cx="40" cy="18" r="8" fill="#ffb8dc" stroke="#8a3b69" stroke-width="2"/><circle cx="30" cy="34" r="17" fill="#ffd6ec" stroke="#8a3b69" stroke-width="2.5"/><circle cx="24" cy="32" r="2.5" fill="#44265d"/><circle cx="36" cy="32" r="2.5" fill="#44265d"/><path d="M26 39 Q30 43 34 39" fill="none" stroke="#8a3b69" stroke-width="2.2" stroke-linecap="round"/></svg>`,
+      msg:"A Cute Party Plushie!"
+    }
+  ];
+
+  function balloonSVG(color, accent){
+    return `<svg viewBox="0 0 80 100" aria-hidden="true">
+      <path d="M40 68 Q35 84 42 98" fill="none" stroke="#ffffffcc" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M40 6 C20 6 10 24 16 44 C21 60 33 68 40 69 C49 67 63 55 65 38 C68 20 56 6 40 6Z" fill="${color}" stroke="#5b2278" stroke-width="2.5"/>
+      <ellipse cx="29" cy="24" rx="6" ry="11" fill="#fff" opacity=".45" transform="rotate(-15 29 24)"/>
+      <path d="M35 69 L45 69 L40 76Z" fill="${accent}" stroke="#5b2278" stroke-width="1.8"/>
+    </svg>`;
+  }
+
+  function cupcakeSVG(color){
+    return `<svg viewBox="0 0 80 80" aria-hidden="true">
+      <path d="M18 38 Q13 24 27 22 Q28 7 41 14 Q54 4 59 24 Q73 28 63 40Z" fill="${color}" stroke="#6b2b7a" stroke-width="2.5"/>
+      <path d="M20 39 L61 39 L54 71 L27 71Z" fill="#f7b2d9" stroke="#6b2b7a" stroke-width="2.5"/>
+      <circle cx="41" cy="12" r="5" fill="#ffe58a" stroke="#6b2b7a" stroke-width="1.8"/>
+    </svg>`;
+  }
+
+  function hatSVG(color){
+    return `<svg viewBox="0 0 80 80" aria-hidden="true">
+      <path d="M12 66 L40 10 L68 66Z" fill="${color}" stroke="#5b2278" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M25 44 L55 44 M18 56 L62 56" stroke="#fff4d5" stroke-width="5"/>
+      <circle cx="40" cy="10" r="6" fill="#ffe58a" stroke="#5b2278" stroke-width="2"/>
+    </svg>`;
+  }
+
+  function buildDecorations(){
+    const decor = $("roomDecor");
+    const bLayer = $("balloonLayer");
+    decor.innerHTML = "";
+    bLayer.innerHTML = "";
+
+    const palette = ["#ff70bd","#ffe58a","#54a9ff","#69d89d","#c285ff","#ff985a"];
+    const balloonSlots = [
+      [14,15],[24,12],[34,16],[66,16],[76,12],[86,15],
+      [9,34],[91,34],[29,28],[71,28]
+    ];
+    const supplySlots = [
+      [11,48],[17,48],[23,48],
+      [78,36],[84,36],[90,36],
+      [6,63],[94,63],[34,42],[66,42],[28,62],[72,62]
+    ];
+
+    const balloons = inventory.filter(i => i.kind === "Balloons");
+    const others = inventory.filter(i => i.kind !== "Balloons");
+
+    // Ensure at least 6 balloons in room even if replayed directly
+    const bCount = Math.max(6, Math.min(balloons.length || 5, balloonSlots.length));
+    for(let i=0;i<bCount;i++){
+      const [x,y] = balloonSlots[i % balloonSlots.length];
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "party-balloon";
+      btn.style.left = x + "%";
+      btn.style.top = y + "%";
+      btn.style.animationDelay = (i * -0.45) + "s";
+      btn.setAttribute("aria-label", "Tap balloon to bounce or pop");
+      btn.innerHTML = balloonSVG(palette[i % palette.length], palette[(i+2)%palette.length]);
+      let taps = 0;
+      bindTap(btn, () => {
+        AudioEngine.unlock();
+        taps++;
+        if(taps < 2){
+          AudioEngine.playBubble();
+          btn.style.top = Math.max(8, y - 5) + "%";
+          Particles.burstAt(x/100, y/100, 10, "circle");
+          $("partyStatus").textContent = "Boing! Tap again to pop!";
+        } else {
+          AudioEngine.playPop();
+          btn.classList.add("is-popped");
+          Particles.burstAt(x/100, y/100, 20, "star");
+          $("partyStatus").textContent = "POP! Balloon confetti!";
+          setTimeout(() => {
+            taps = 0;
+            btn.style.top = y + "%";
+            btn.classList.remove("is-popped");
+          }, 3200);
+        }
+      });
+      bLayer.appendChild(btn);
+    }
+
+    others.slice(0, supplySlots.length).forEach((item, idx) => {
+      const [x,y] = supplySlots[idx];
+      const div = document.createElement("div");
+      div.className = "decor-prop";
+      div.style.left = x + "%";
+      div.style.top = y + "%";
+      const c = palette[(idx+1) % palette.length];
+      div.innerHTML = item.kind === "Cupcakes" ? cupcakeSVG(c) : hatSVG(c);
+      decor.appendChild(div);
+    });
+  }
+
+  function buildPresents(){
+    const zone = $("presentsZone");
+    zone.innerHTML = "";
+    giftSurprises.forEach((g, idx) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "gift-btn";
+      btn.setAttribute("aria-label", `Open birthday present ${idx + 1}`);
+      btn.innerHTML = `
+        <div class="gift-toy">${g.toySvg}</div>
+        <svg viewBox="0 0 80 84" aria-hidden="true">
+          <rect x="8" y="28" width="64" height="48" rx="8" fill="${g.boxColor}" stroke="#4b1a66" stroke-width="3"/>
+          <rect x="34" y="28" width="12" height="48" fill="${g.ribbon}"/>
+          <rect x="4" y="18" width="72" height="14" rx="5" fill="${g.boxColor}" stroke="#4b1a66" stroke-width="3"/>
+          <rect x="34" y="18" width="12" height="14" fill="${g.ribbon}"/>
+          <path d="M40 18 Q25 4 22 15 Q26 20 40 18 Z M40 18 Q55 4 58 15 Q54 20 40 18 Z" fill="${g.ribbon}" stroke="#4b1a66" stroke-width="2"/>
+        </svg>`;
+      bindTap(btn, () => {
+        AudioEngine.unlock();
+        if(!btn.classList.contains("is-open")){
+          btn.classList.add("is-wobble");
+          AudioEngine.playUnwrap();
+          setTimeout(() => {
+            btn.classList.remove("is-wobble");
+            btn.classList.add("is-open");
+            Particles.burstAt(0.16 + idx * 0.05, 0.56, 22, "star");
+            $("partyStatus").textContent = `Surprise! ${g.msg}`;
+            PartyCharacters.react("aria", g.name + "!");
+          }, 260);
+        } else {
+          btn.classList.remove("is-open");
+          AudioEngine.playSoftBoop();
+          $("partyStatus").textContent = "Present wrapped back up!";
+        }
+      });
+      zone.appendChild(btn);
+    });
+  }
+
+  function renderCake(){
+    const btn = $("cakeBtn");
+    const slicesLeft = Math.max(0, 4 - cakePhase);
+    btn.classList.toggle("candles-out", cakePhase >= 1);
+    btn.innerHTML = `
+      <span class="hotspot-hint" id="cakeHint">★</span>
+      <svg viewBox="0 0 120 110" aria-hidden="true">
+        <!-- Plate -->
+        <ellipse cx="60" cy="98" rx="50" ry="10" fill="#fff5fc" stroke="#b98ce0" stroke-width="2.5"/>
+        <!-- Bottom Tier -->
+        <path d="M18 68 L102 68 L102 94 Q60 103 18 94 Z" fill="#ff85c4" stroke="#632275" stroke-width="2.5"/>
+        <path d="M18 68 Q30 78 42 68 Q54 78 66 68 Q78 78 90 68 Q96 74 102 68" fill="#fff4fc" stroke="#632275" stroke-width="2"/>
+        <!-- Top Tier -->
+        <path d="M30 42 L90 42 L90 68 Q60 75 30 68 Z" fill="#ffe58a" stroke="#632275" stroke-width="2.5"/>
+        <path d="M30 42 Q40 50 50 42 Q60 50 70 42 Q80 50 90 42" fill="#ffffff" stroke="#632275" stroke-width="2"/>
+        <!-- Candles -->
+        ${[42,60,78].map(cx => `
+          <rect x="${cx-3}" y="22" width="6" height="20" rx="2" fill="#71c9f2" stroke="#4a1f66" stroke-width="1.5"/>
+          <path class="flame" d="M${cx} 9 C${cx-5} 16 ${cx-4} 21 ${cx} 21 C${cx+4} 21 ${cx+5} 16 ${cx} 9Z" fill="#ffbb33"/>
+        `).join("")}
+        <!-- Slice indicator -->
+        ${slicesLeft === 0 ? `<text x="60" y="86" text-anchor="middle" font-size="11" font-weight="900" fill="#fff">YUM!</text>` : ""}
+      </svg>`;
+  }
+
+  function handleCakeTap(){
+    AudioEngine.unlock();
+    const hint = $("cakeHint");
+    if(hint) hint.style.display = "none";
+    if(cakePhase === 0){
+      cakePhase = 1;
+      renderCake();
+      AudioEngine.playCheer();
+      Particles.burstAt(0.84, 0.45, 24, "circle");
+      $("partyStatus").textContent = "Happy Birthday! You blew out the candles! Tap again to serve cake!";
+      PartyCharacters.say("aria", "Make a wish! 🌟");
+    } else if(cakePhase >= 1 && cakePhase <= 3){
+      const recipients = ["ella", "june", "aria"];
+      const who = recipients[cakePhase - 1];
+      cakePhase++;
+      renderCake();
+      serveSliceTo(who);
+    } else {
+      cakePhase = 0;
+      renderCake();
+      AudioEngine.playChime(659);
+      $("partyStatus").textContent = "Fresh birthday cake with glowing candles!";
+    }
+  }
+
+  function serveSliceTo(who){
+    const world = $("partyWorld");
+    const slice = document.createElement("div");
+    slice.className = "flying-slice";
+    slice.style.left = "82%";
+    slice.style.top = "48%";
+    slice.innerHTML = `<svg viewBox="0 0 40 40"><path d="M6 28 L34 28 L34 16 L6 22 Z" fill="#ffe58a" stroke="#632275" stroke-width="2"/><path d="M6 22 L34 16 L24 9 Z" fill="#ff70bd" stroke="#632275" stroke-width="2"/></svg>`;
+    world.appendChild(slice);
+
+    const targetX = who === "ella" ? "27%" : who === "aria" ? "49%" : "70%";
+    requestAnimationFrame(() => {
+      slice.style.left = targetX;
+      slice.style.top = "56%";
+      slice.style.transform = "scale(1.15) rotate(-12deg)";
+    });
+    setTimeout(() => {
+      slice.style.opacity = "0";
+      PartyCharacters.react(who, "Yum! 🍰");
+      $("partyStatus").textContent = `${who.charAt(0).toUpperCase() + who.slice(1)} loves the birthday cake!`;
+      setTimeout(() => slice.remove(), 300);
+    }, 640);
+  }
+
+  function spawnBubbles(count=18){
+    const layer = $("bubblesLayer");
+    if(!layer) return;
+    AudioEngine.unlock();
+    AudioEngine.playBubble();
+    for(let i=0;i<count;i++){
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "pop-bubble";
+      b.setAttribute("aria-label", "Pop bubble");
+      const size = 24 + Math.random() * 28;
+      b.style.width = size + "px";
+      b.style.height = size + "px";
+      b.style.left = (6 + Math.random() * 88) + "%";
+      b.style.animationDelay = (Math.random() * 1.6) + "s";
+      bindTap(b, () => {
+        AudioEngine.playBubble();
+        b.remove();
+      });
+      layer.appendChild(b);
+      setTimeout(() => b.remove(), 7500);
+    }
+    $("partyStatus").textContent = "Bubbles everywhere! Tap bubbles to pop them!";
+  }
+
+  function cycleLights(){
+    AudioEngine.unlock();
+    moodIdx = (moodIdx + 1) % moods.length;
+    const m = moods[moodIdx];
+    $("partyWorld").setAttribute("data-mood", m.id);
+    $("lightsBtnLabel").textContent = m.label;
+    AudioEngine.playChime(587 + moodIdx * 60);
+    $("partyStatus").textContent = `Party Lights: ${m.label} Mode!`;
+  }
+
+  function resetAll(){
+    cakePhase = 0;
+    moodIdx = 0;
+    $("partyWorld").setAttribute("data-mood", "disco");
+    $("lightsBtnLabel").textContent = "Lights";
+    buildDecorations();
+    buildPresents();
+    renderCake();
+  }
+
+  return { resetAll, handleCakeTap, spawnBubbles, cycleLights };
+})();
+
+/* ==================== 6. PARTY DIRECTOR (PHASE A -> PHASE B) ==================== */
+const PartyDirector = (() => {
+  let timers = [];
+  let inPhaseB = false;
+
+  function clearTimers(){
+    timers.forEach(t => clearTimeout(t));
+    timers = [];
+  }
+
+  function enterPlaygroundNow(){
+    clearTimers();
+    inPhaseB = true;
+    const world = $("partyWorld");
+    world.classList.remove("is-dim");
+    world.classList.add("lights-on");
+    $("wallSign").classList.add("is-visible");
+    document.querySelectorAll(".party-balloon, .decor-prop").forEach(el => el.classList.add("is-shown"));
+    $("presentsZone").classList.add("is-shown");
+    $("cakeZone").classList.add("is-shown");
+    ["ella","june","aria"].forEach(id => PartyCharacters.showSlot(id, true));
+    PartyCharacters.setDance(0);
+    $("celebrationBanner").classList.remove("is-shown");
+    $("skipIntroBtn").classList.add("hidden");
+    $("phaseBadge").textContent = "PLAYGROUND";
+    $("partyStatus").textContent = "Tap characters, cake, presents, balloons, or the DJ booth!";
+  }
+
+  function startCelebration(){
+    clearTimers();
+    inPhaseB = false;
+    Particles.init();
+    Particles.clear();
+    PartyCharacters.renderAll();
+    PartyCharacters.clearDance();
+    PartyActivities.resetAll();
+
+    const world = $("partyWorld");
+    world.classList.add("is-dim");
+    world.classList.remove("lights-on");
+    $("wallSign").classList.remove("is-visible");
+    $("presentsZone").classList.remove("is-shown");
+    $("cakeZone").classList.remove("is-shown");
+    ["ella","june","aria"].forEach(id => PartyCharacters.showSlot(id, false));
+    $("celebrationBanner").classList.remove("is-shown");
+    $("skipIntroBtn").classList.remove("hidden");
+    $("phaseBadge").textContent = "CELEBRATION";
+    $("partyStatus").textContent = "Shh... the party room is waking up!";
+
+    if(prefersReducedMotion()){
+      enterPlaygroundNow();
+      return;
+    }
+
+    // Step 1: Room lights up + Wall sign glows
+    timers.push(setTimeout(() => {
+      world.classList.remove("is-dim");
+      world.classList.add("lights-on");
+      $("wallSign").classList.add("is-visible");
+      AudioEngine.playChime(523.25);
+      $("partyStatus").textContent = "The party lights are on!";
+    }, 650));
+
+    // Step 2: Balloons & collected supplies pop into place
+    timers.push(setTimeout(() => {
+      document.querySelectorAll(".party-balloon, .decor-prop").forEach((el, i) => {
+        setTimeout(() => el.classList.add("is-shown"), Math.min(i * 65, 600));
+      });
+      AudioEngine.playPop();
+      $("partyStatus").textContent = "All your balloons, cupcakes, and party hats are here!";
+    }, 1600));
+
+    // Step 3: Cake & Presents revealed
+    timers.push(setTimeout(() => {
+      $("presentsZone").classList.add("is-shown");
+      $("cakeZone").classList.add("is-shown");
+      AudioEngine.playUnwrap();
+      $("partyStatus").textContent = "Look! Birthday cake and presents!";
+    }, 2700));
+
+    // Step 4: Ella, June, and Aria enter one by one
+    timers.push(setTimeout(() => {
+      PartyCharacters.showSlot("ella", true);
+      PartyCharacters.say("ella", "I'm here!");
+      AudioEngine.playChime(523);
+    }, 3600));
+
+    timers.push(setTimeout(() => {
+      PartyCharacters.showSlot("june", true);
+      PartyCharacters.say("june", "Party time!");
+      AudioEngine.playChime(587);
+    }, 4150));
+
+    timers.push(setTimeout(() => {
+      PartyCharacters.showSlot("aria", true);
+      PartyCharacters.say("aria", "Hooray!");
+      AudioEngine.playCheer();
+    }, 4700));
+
+    // Step 5: Coordinated Finale (Music + Dancing + Confetti + Fireworks)
+    timers.push(setTimeout(() => {
+      PartyCharacters.setDance(0);
+      $("celebrationBanner").classList.add("is-shown");
+      Particles.confetti(70);
+      Particles.fireworkShow();
+      if(!AudioEngine.isMuted()) AudioEngine.startMusic();
+      $("partyStatus").textContent = "Everybody celebrate!";
+    }, 5450));
+
+    // Step 6: Transition smoothly into Phase B Playground
+    timers.push(setTimeout(() => {
+      enterPlaygroundNow();
+    }, 8400));
+  }
+
+  return { startCelebration, enterPlaygroundNow, clearTimers };
+})();
+
+/* ==================== 7. FINISH GAME & EVENT WIRING ==================== */
+function finishGame(){
+  show("finish");
+  $("stagePill").textContent = "Party time!";
+  speak("Hooray, Aria! You found every party supply. Welcome to your birthday party!");
+  PartyDirector.startCelebration();
+}
+
+function toggleVoice(){
+  voiceOn = !voiceOn;
+  $("soundBtn").textContent = `Voice: ${voiceOn ? "on" : "off"}`;
+  if(!voiceOn && "speechSynthesis" in window) window.speechSynthesis.cancel();
+  else speak(lastMessage);
+}
+
+bindTap($("startBtn"), startGame);
+bindTap($("repeatBtn"), () => speak(lastMessage));
+bindTap($("soundBtn"), toggleVoice);
+
+bindTap($("againBtn"), () => {
+  PartyDirector.clearTimers();
+  AudioEngine.stopMusic();
+  Particles.clear();
+  show("welcome");
+  $("stagePill").textContent = "Let's get ready!";
+});
+
+bindTap($("skipIntroBtn"), () => PartyDirector.enterPlaygroundNow());
+bindTap($("replayIntroBtn"), () => PartyDirector.startCelebration());
+
+bindTap($("audioToggleBtn"), () => {
+  AudioEngine.unlock();
+  AudioEngine.setMuted(!AudioEngine.isMuted());
+});
+
+bindTap($("musicBtn"), () => AudioEngine.toggleMusic());
+bindTap($("djHotspot"), async () => {
+  const name = await AudioEngine.nextTrack();
+  $("partyStatus").textContent = `DJ Booth: Now playing ${name}!`;
+  Particles.burstAt(0.5, 0.36, 16, "star");
+});
+
+bindTap($("danceBtn"), () => PartyCharacters.nextDance());
+bindTap($("bubbleBtn"), () => PartyActivities.spawnBubbles(18));
+bindTap($("fireworksBtn"), () => {
+  AudioEngine.unlock();
+  Particles.fireworkShow();
+  Particles.confetti(40);
+  $("partyStatus").textContent = "WOW! Birthday Fireworks!";
+});
+bindTap($("lightsBtn"), () => PartyActivities.cycleLights());
+bindTap($("cakeBtn"), () => PartyActivities.handleCakeTap());
+bindTap($("btn-ella"), () => PartyCharacters.react("ella"));
+bindTap($("btn-aria"), () => PartyCharacters.react("aria"));
+bindTap($("btn-june"), () => PartyCharacters.react("june"));
+</script>
+</body>
+</html>
